@@ -1,0 +1,62 @@
+.set-week {
+  &-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0 solid #f0f0f0;
+    border-bottom-width: 1px;
+    font-size: 30px;
+    color: #333333;
+    height: 80px;
+
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+    font-size: 30px;
+    color: #333333;
+    height: 82px;
+    border: 0 solid #f0f0f0;
+    border-bottom-width: 1px;
+
+    &-yes {
+      margin-right: 30px;
+      height: 35px;
+      width: 35px;
+    }
+
+  }
+
+  &-button {
+    display: flex;
+    &-cancel {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #333333;
+      height: 80px;
+      border: 0 solid #f0f0f0;
+      border-right-width: 1px;
+    }
+
+    &-sure {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #02ca73;
+      height: 80px;
+    }
+  }
+
+}
+.at-modal__container {
+  position: absolute;
+  top: 40%;
+}

@@ -1,0 +1,64 @@
+.analysis-list {
+  background: white;
+  &-item {
+    height: 145px;
+    display: flex;;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 0 solid #f0f0f0;
+    border-bottom-width: 1px;
+    &-cycle {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &-icon {
+        margin-left: 25px;
+        height: 96px;
+        width: 96px;
+      }
+      &-detail {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 30px;
+        &-app {
+          font-size: 30px;
+          color: #444444;
+        }
+        &-time {
+          font-size: 24px;
+          color: #999999;
+        }
+      }
+
+      &-unlock {
+        color: #666666;
+        font-size: 26px;
+        margin-right: 25px;
+        width: 106px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 27px;
+        border: 2px solid #f0f0f0;
+      }
+
+      &-lock {
+        color: #666666;
+        font-size: 26px;
+        margin-right: 25px;
+        width: 160px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 27px;
+        border: 2px solid #f0f0f0;
+      }
+    }
+  }
+}
+

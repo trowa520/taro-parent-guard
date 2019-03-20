@@ -1,0 +1,40 @@
+.app-manager {
+  background: #f1f1f1;
+  &-tab-content {
+    margin: 0 20px;
+    margin-top: 20px;
+    &-tips {
+      margin-bottom: 20px;
+      width: 710px;
+      height: 136px;
+      background: #ffecb9;
+      font-size: 24px;
+      color: #904801;
+      word-wrap:break-word;
+      overflow:hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.at-tabs__item {
+  color: #999999;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  &--active {
+    color: #333333;
+    border-bottom-width: 10px;
+  }
+  //&-underline {
+  //  height: 3px;
+  //  width: 60%;
+  //  margin-left: 35px;
+  //}
+}
+
+
+
+

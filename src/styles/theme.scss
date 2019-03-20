@@ -1,0 +1,19 @@
+@import "./mixins.scss";
+$color-brand: #02ca73;
+/* 引入 Taro UI 默认样式 */
+@import "~taro-ui/dist/style/index.scss";
+
+$primary-color: #02ca73;
+$disabled-color: #dddddd;
+
+$black: #000000;
+$white: #ffffff;
+
+$text-color: #333333;
+$text-color-light: #666666;
+$text-color-lighter: #999999;
+
+$border-color: #dddddd;
+$border-radius: 4px;
+
+$image-bg: #f4f4f4;
