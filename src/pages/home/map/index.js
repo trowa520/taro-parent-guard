@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 
 import './index.scss'
 
-export default class Map extends Component{
+export default class MyMap extends Component{
   constructor(props) {
     super(props)
   }

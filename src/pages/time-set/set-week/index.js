@@ -7,9 +7,6 @@ export default class setWeek extends Component{
 
   constructor(props) {
     super(props)
-    this.state = {
-      days: []
-    }
   }
   onClickCancel() {
     this.props.onClose()
