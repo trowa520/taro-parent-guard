@@ -1,5 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import {Button, View, Image} from '@tarojs/components'
+import { getWindowHeight } from "@utils/style";
+import List from './list'
+
+import AddDeviceIcon from './assets/add-device.png'
+import AddParentIcon from './assets/add-parent.png'
+import StudentDocIcon from './assets/student-doc.png'
+import InviteIcon from './assets/invite.png'
+import DefaultIcon from './assets/default-avatar.png'
+import MessageIcon from './assets/message.png'
 import './profile.scss'
 
 export default class Profile extends Component {
@@ -26,10 +35,33 @@ export default class Profile extends Component {
   componentDidHide () { }
 
   render () {
+    const list = [{icon: AddDeviceIcon, title: '添加管理设备'},{icon: AddParentIcon, title: '添加家长'},{icon: StudentDocIcon, title: '孩子档案'},{icon: InviteIcon, title: '推荐有礼'},]
     return (
-      <View className='app'>
-        我
-      </View>
+        <View className='profile' style={{ height: getWindowHeight() }}>
+          <View className='profile-info'>
+            <Image className='profile-info-avatar' src={DefaultIcon} />
+            <View className='profile-info-username'>刘汾阳家长</View>
+            <View className='profile-info-message'>
+              <Image className='profile-info-message-img' src={MessageIcon}/>
+            </View>
+            <View className='profile-info-devices'>
+              <View className='profile-info-devices-top'>
+                <View className='profile-info-devices-top-count'>2</View>
+                <View className='profile-info-devices-top-unit'>个</View>
+              </View>
+              <View className='profile-info-devices-vip'>已绑定设备(使用中)</View>
+              <View className='profile-info-devices-buttons'>
+                <View className='profile-info-devices-buttons-open'>开通VIP</View>
+                <View className='profile-info-devices-buttons-record'>消费明细</View>
+              </View>
+            </View>
+          </View>
+          <View className='profile-list'>
+            <List list={list} />
+          </View>
+          <Button className='profile-logout-button' onClick={this.login}>退出登录</Button>
+        </View>
+
     )
   }
 }

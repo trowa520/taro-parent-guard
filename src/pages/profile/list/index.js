@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import rightIcon from '../assets/right.png'
+import classNames from 'classnames'
 import './index.scss'
 
 export default class List extends Component{
@@ -16,19 +17,15 @@ export default class List extends Component{
   render() {
     const { list } = this.props
     return (
-      <View className='list'>
-        {list.map(item => {
+      <View className='profile-list'>
+        {list.map((item, index) => {
           return (
-            <View className='list-item' onClick={this.navToTimeSet.bind(this, item)}>
-              <View className='list-item-cycle'>
-                <View className='list-item-time'>
-                  {item.begin_at}-{item.end_at}
-                </View>
-                <View className='list-item-date'>
-                  {item.date}
-                </View>
+            <View className={classNames('profile-list-item', {'profile-list-item--last' : index === list.length-1})} onClick={this.navToTimeSet.bind(this, item)}>
+              <Image className='profile-list-item-icon' src={item.icon} />
+              <View className='profile-list-item-title'>
+                  {item.title}
               </View>
-              <Image className='list-item-img' src={rightIcon} />
+              <Image className='profile-list-item-img' src={rightIcon} />
             </View>
           )
         })}

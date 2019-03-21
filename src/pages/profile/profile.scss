@@ -1,0 +1,133 @@
+
+.profile {
+  background: #f1f1f1;
+
+  &-info {
+    height: 220px;
+    background: #02ca73;
+    position: relative;
+    display: flex;
+    &-avatar {
+      margin-left: 25px;
+      margin-top: 46px;
+      height: 80px;
+      width: 80px;
+      background: white;
+      border-radius: 40px;
+    }
+
+    &-username {
+      display: flex;
+      align-items: center;
+      margin-left: 25px;
+      margin-top: 46px;
+      height: 80px;
+      width: 380px;
+      color: white;
+      font-size: 40px;
+    }
+
+    &-message {
+      margin-left: 25px;
+      margin-top: 46px;
+      height: 80px;
+      width: 380px;
+      display: flex;
+      justify-content: flex-end;
+      &-img {
+        margin-right: 25px;
+        height: 40px;
+        width: 40px;
+      }
+    }
+
+    &-devices {
+      position: absolute;
+      top: 160px;
+      left: 25px;
+      right: 25px;
+      height: 280px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 2px 2px 26px #999999;
+      font-size: 30px;
+      color: #333333;
+      &-top {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        height: 120px;
+        &-count{
+          padding-top: 20px;
+          color: #02ca73;
+          font-size: 70px;
+        }
+        &-unit {
+          color: #999999;
+          font-size: 26px;
+        }
+      }
+      &-vip {
+        font-size: 28px;
+        color: #999999;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        border: 0 solid #f0f0f0;
+        border-bottom-width: 1px;
+      }
+
+      &-buttons {
+        height: 90px;
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+
+        &-open {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: 0 solid #f0f0f0;
+          border-right-width: 1px;
+        }
+
+        &-record {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+    }
+  }
+
+  &-list {
+    margin-top: 250px;
+    border-radius: 15px;
+  }
+  &-logout-button {
+    width: 690px;
+    margin-top: 50px;
+    height: 100px;
+    color: white;
+    background: #02ca73;
+    border-radius: 15px;
+    border: none;
+    font-size: 40px;
+  }
+}
+.at-list__item {
+  height: 90px;
+}
+.at-list__item--thumb .item-thumb {
+  height: 40px;
+  width: 40px;
+}
+.at-list__item-content {
+  color: #333333;
+  font-size: 30px;
+}
+
+
