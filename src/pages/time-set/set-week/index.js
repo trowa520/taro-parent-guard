@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import YesIcon from '@assets/yes.png'
 import './index.scss'
-import YesIcon from '../assets/yes.png'
 
 export default class setWeek extends Component{
 

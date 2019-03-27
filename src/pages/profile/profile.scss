@@ -19,26 +19,19 @@
     &-username {
       display: flex;
       align-items: center;
-      margin-left: 25px;
-      margin-top: 46px;
+      padding-left: 25px;
+      padding-top: 46px;
       height: 80px;
       width: 380px;
       color: white;
       font-size: 40px;
     }
-
     &-message {
-      margin-left: 25px;
-      margin-top: 46px;
-      height: 80px;
-      width: 380px;
-      display: flex;
-      justify-content: flex-end;
-      &-img {
-        margin-right: 25px;
-        height: 40px;
-        width: 40px;
-      }
+      position: absolute;
+      right: 30px;
+      top: 50px;
+      height: 40px;
+      width: 40px;
     }
 
     &-devices {
@@ -74,7 +67,7 @@
         display: flex;
         justify-content: center;
         border: 0 solid #f0f0f0;
-        border-bottom-width: 1px;
+        border-bottom-width: 2px;
       }
 
       &-buttons {
@@ -110,12 +103,12 @@
   &-logout-button {
     width: 690px;
     margin-top: 50px;
-    height: 100px;
+    height: 94px;
     color: white;
     background: #02ca73;
     border-radius: 15px;
     border: none;
-    font-size: 40px;
+    font-size: 34px;
   }
 }
 .at-list__item {

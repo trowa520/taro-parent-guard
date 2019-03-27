@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Map } from '@tarojs/components'
 import { getWindowHeight } from '@utils/style'
+import rightIcon from '@assets/right.png'
 
 import Banner from './banner'
 import Menu from './menu'
@@ -8,7 +9,6 @@ import Lock from './lock'
 import Analysis from './analysis'
 import AMap from './map'
 import './home.scss'
-import rightIcon from "./assets/right.png";
 
 export default class Home extends Component {
 
@@ -55,7 +55,7 @@ export default class Home extends Component {
         isOnline: '0',
         appCount: '10',
         waring: '5',
-        avatar: 'http://dev.xiangqingou.cn/images/default/female.png'
+        avatar: 'http://api.leerzhi.com.cn/images/default/female.png'
       }
     ]
     const analysis = [
@@ -69,7 +69,7 @@ export default class Home extends Component {
         id: 2,
         name: '爱奇艺',
         time: '4小时03分钟12秒',
-        icon: 'http://dev.xiangqingou.cn/images/default/female.png'
+        icon: 'http://api.leerzhi.com.cn/images/default/female.png'
       },
       {
         id: 3,

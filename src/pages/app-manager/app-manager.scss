@@ -1,0 +1,95 @@
+.app-manager {
+  background: #f1f1f1;
+
+  &-tips {
+    margin: 0 20px;
+    padding: 10px 25px;
+    background: #ffecb9;
+    font-size: 24px;
+    color: #904801;
+  }
+
+  &-card {
+    margin: 0 20px;
+    margin-top: 20px;
+    height: 260px;
+    background: white;
+    &-app {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 130px;
+      border: 0 solid #ebebeb;
+      border-bottom-width: 2px;
+      &-icon {
+        margin-left: 20px;
+        height: 96px;
+        width: 96px;
+        border-radius: 48px;
+      }
+      &-name {
+        margin-left: 20px;
+        flex: 2;
+        font-size: 30px;
+        color: #333333;
+      }
+      &-time {
+        margin-right: 25px;
+        font-size: 28px;
+        color: #999999;
+      }
+    }
+
+    &-set {
+      display: flex;
+      font-size: 30px;
+      height: 130px;
+      justify-content: space-around;
+      align-items: center;
+      &-free {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 27px;
+        color: white;
+        background: #02ca73;
+        height: 54px;
+        width: 150px;
+      }
+      &-limit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 27px;
+        color: white;
+        background: #fd8402;
+        height: 54px;
+        width: 150px;
+      }
+      &-stop {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 27px;
+        color: white;
+        background: #fe330b;
+        height: 54px;
+        width: 150px;
+      }
+      &-single {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 27px;
+        color: white;
+        background: #5d7dfe;
+        height: 54px;
+        width: 150px;
+      }
+    }
+  }
+}
+.line-view {
+  height: 20px;
+  width: 100%;
+}

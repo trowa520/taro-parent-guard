@@ -29,6 +29,11 @@ class App extends Component {
       'pages/time-manager/time-manager',
       'pages/time-set/time-set',
       'pages/app/app',
+      'pages/vip/vip',
+      'pages/device/device',
+      'pages/pay-response/pay-response',
+      'pages/add-parent/add-parent',
+      'pages/app-manager/app-manager',
     ],
     window: {
       backgroundTextStyle: 'light',

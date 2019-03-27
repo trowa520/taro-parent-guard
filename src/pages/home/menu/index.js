@@ -2,10 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import jump from '@utils/jump'
 
-import unlockIcon from '../assets/unlock.png'
-import appIcon from '../assets/app.png'
-import timeIcon from '../assets/time.png'
-import locationIcon from '../assets/location.png'
+import unlockIcon from '@assets/unlock.png'
+import appIcon from '@assets/app.png'
+import timeIcon from '@assets/time.png'
+import locationIcon from '@assets/location.png'
 
 import './index.scss'
 

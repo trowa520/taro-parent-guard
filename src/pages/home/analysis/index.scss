@@ -10,7 +10,7 @@
     flex-direction: row;
     align-items: center;
     border: 0 solid #f0f0f0;
-    border-bottom-width: 1px;
+    border-bottom-width: 2px;
     // 设备锁屏
     &-text {
       flex: 2;
@@ -44,7 +44,7 @@
     flex-direction: row;
     align-items: center;
     border: 0 solid #f1f1f1;
-    border-bottom-width: 1px;
+    border-bottom-width: 2px;
 
     &-icon {
       margin-left: 25px;
@@ -78,7 +78,7 @@
       font-size: 30px;
       margin-right: 25px;
       width: 135px;
-      height: 60px;
+      height: 54px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -91,7 +91,7 @@
       margin-right: 25px;
       background: rgb(238, 118, 48);
       width: 135px;
-      height: 60px;
+      height: 54px;
       display: flex;
       align-items: center;
       justify-content: center;

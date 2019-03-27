@@ -1,0 +1,103 @@
+.vip {
+  background: #f1f1f1;
+  height: 100%;
+
+  &-line-view {
+    height: 2px;
+    background: #f1f1f1;
+  }
+
+  &-user-info{
+    background: white;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    &-icon {
+      padding-left: 25px;
+      height: 80px;
+      width: 80px;
+    }
+
+    &-name {
+      padding-left: 25px;
+      font-size: 30px;
+      color: #333333;
+    }
+
+    &-expire {
+      flex: 2;
+      padding-right: 25px;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 30px;
+      color: #FC6D04;
+    }
+  }
+
+  &-product {
+    margin-top: 20px;
+  }
+
+  &-platform {
+    margin-top: 20px;
+    height: 210px;
+    background: white;
+    &-wechat {
+      height: 105px;
+      border: 0 solid #f0f0f0;
+      border-bottom-width: 2px;
+      display: flex;
+      align-items: center;
+      &-icon {
+        margin-left: 20px;
+        height: 60px;
+        width: 60px;
+      }
+      &-name {
+        flex: 3;
+        margin-left: 25px;
+        font-size: 30px;
+        color: #333333;
+      }
+      &-right {
+        margin-right: 25px;
+        height: 40px;
+        width: 40px;
+      }
+    }
+    &-ali {
+      height: 105px;
+      border: 0 solid #f0f0f0;
+      border-bottom-width: 2px;
+      display: flex;
+      align-items: center;
+      &-icon {
+        margin-left: 20px;
+        height: 60px;
+        width: 60px;
+      }
+      &-name {
+        flex: 3;
+        margin-left: 25px;
+        font-size: 30px;
+        color: #333333;
+      }
+      &-right {
+        margin-right: 25px;
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
+
+  &-pay {
+    width: 690px;
+    margin-top: 50px;
+    height: 94px;
+    color: white;
+    background: #02ca73;
+    border-radius: 15px;
+    border: none;
+    font-size: 34px;
+  }
+}

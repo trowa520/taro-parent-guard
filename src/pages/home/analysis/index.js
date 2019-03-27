@@ -1,11 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import jump from '@utils/jump'
-
+import rightIcon from '@assets/right.png'
+import deviceIcon from '@assets/device.png'
 import List from './list'
-
-import rightIcon from '../assets/right.png'
-import deviceIcon from '../assets/device.png'
 
 import './index.scss'
 
@@ -17,7 +15,9 @@ export default class Analysis extends Component{
 
 
   handleClick = () => {
-    jump({ url: '/pages/time-manager/time-manager', title: '时间管理'})
+    Taro.switchTab({
+      url: '/pages/statistics/statistics'
+    })
   }
 
   render() {
@@ -40,7 +40,7 @@ export default class Analysis extends Component{
         </View>
         <List list={list} />
         <View className='analysis-bottom'>
-          <View className='analysis-bottom-des'>
+          <View className='analysis-bottom-des' onClick={this.handleClick.bind(this)}>
             查看全部数据{`\>\>`}
           </View>
         </View>

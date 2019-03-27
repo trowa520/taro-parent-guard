@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import rightIcon from '../assets/right.png'
+import rightIcon from '@assets/right.png'
 import './index.scss'
 
 export default class TimeLengthList extends Component{

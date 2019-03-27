@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import rightIcon from '../assets/right.png'
+import rightIcon from '@assets/right.png'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -10,7 +10,7 @@ export default class List extends Component{
   }
   navToTimeSet = (item) => {
     Taro.navigateTo({
-      url: `/pages/time-set/time-set?item_id=${item.id}&begin_at=${item.begin_at}&end_at=${item.end_at}&date=${item.date}`
+      url: item.url
     })
   }
 

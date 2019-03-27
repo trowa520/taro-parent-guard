@@ -14,7 +14,7 @@ const sassImporter = function(url) {
 }
 
 const config = {
-  projectName: 'taro-yanxuan',
+  projectName: 'parent-guard',
   date: '2019-2-1',
   designWidth: 750,
   deviceRatio: {

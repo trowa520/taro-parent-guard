@@ -1,10 +1,12 @@
 import { ADD_LOCK_DATE } from '@constants/time_manager';
-import { action} from "@utils/redux";
 
-export const dispatchAddLockDate = payload => action({
-  type: ADD_LOCK_DATE,
-  payload
-})
+export function dispatchAddLockDate (payload){
+  return {
+    type: ADD_LOCK_DATE,
+    payload
+  }
+}
+
 
 
 

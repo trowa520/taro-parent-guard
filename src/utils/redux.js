@@ -14,11 +14,3 @@ export function createAction(options) {
     })
   }
 }
-
-export function action(options) {
-  const { payload, type } = options
-  return (dispatch) => {
-      // 将 action 传递到 reducers
-      dispatch({ type, payload })
-  }
-}

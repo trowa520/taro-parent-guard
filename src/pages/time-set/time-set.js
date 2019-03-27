@@ -1,11 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Button, Image, Picker} from '@tarojs/components'
 import { AtModal } from "taro-ui";
-import SetWeek from './set-week'
 import { getWindowHeight } from '@utils/style'
-import rightIcon from './assets/right.png'
+import rightIcon from '@assets/right.png'
+import SetWeek from './set-week'
 import './time-set.scss'
-
 
 export default class TimeSet extends Component {
 

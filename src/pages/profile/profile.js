@@ -1,15 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
 import {Button, View, Image} from '@tarojs/components'
 import { getWindowHeight } from "@utils/style";
+import AddDeviceIcon from '@assets/add-device.png'
+import AddParentIcon from '@assets/add-parent.png'
+import StudentDocIcon from '@assets/student-doc.png'
+import InviteIcon from '@assets/invite.png'
+import DefaultIcon from '@assets/default-avatar.png'
+import MessageIcon from '@assets/message.png'
+import jump from "@utils/jump";
 import List from './list'
-
-import AddDeviceIcon from './assets/add-device.png'
-import AddParentIcon from './assets/add-parent.png'
-import StudentDocIcon from './assets/student-doc.png'
-import InviteIcon from './assets/invite.png'
-import DefaultIcon from './assets/default-avatar.png'
-import MessageIcon from './assets/message.png'
 import './profile.scss'
+
 
 export default class Profile extends Component {
 
@@ -24,26 +25,26 @@ export default class Profile extends Component {
     navigationBarTitleText: '我'
   }
 
-  componentWillMount () { }
 
-  componentDidMount () { }
-
-  componentWillUnmount () { }
-
-  componentDidShow () { }
-
-  componentDidHide () { }
+  onClickVip = () => {
+    jump({
+      url: '/pages/vip/vip'
+    })
+  }
 
   render () {
-    const list = [{icon: AddDeviceIcon, title: '添加管理设备'},{icon: AddParentIcon, title: '添加家长'},{icon: StudentDocIcon, title: '孩子档案'},{icon: InviteIcon, title: '推荐有礼'},]
+    const list = [
+      {icon: AddDeviceIcon, title: '添加管理设备', url: '/pages/home/home'},
+      {icon: AddParentIcon, title: '添加家长', url: '/pages/add-parent/add-parent'},
+      {icon: StudentDocIcon, title: '设置设备信息', url: '/pages/device/device'},
+      {icon: InviteIcon, title: '推荐有礼', url: '/pages/home/home'}
+    ]
     return (
         <View className='profile' style={{ height: getWindowHeight() }}>
           <View className='profile-info'>
             <Image className='profile-info-avatar' src={DefaultIcon} />
             <View className='profile-info-username'>刘汾阳家长</View>
-            <View className='profile-info-message'>
-              <Image className='profile-info-message-img' src={MessageIcon}/>
-            </View>
+              <Image className='profile-info-message' src={MessageIcon} />
             <View className='profile-info-devices'>
               <View className='profile-info-devices-top'>
                 <View className='profile-info-devices-top-count'>2</View>
@@ -51,7 +52,7 @@ export default class Profile extends Component {
               </View>
               <View className='profile-info-devices-vip'>已绑定设备(使用中)</View>
               <View className='profile-info-devices-buttons'>
-                <View className='profile-info-devices-buttons-open'>开通VIP</View>
+                <View className='profile-info-devices-buttons-open' onClick={this.onClickVip}>开通VIP</View>
                 <View className='profile-info-devices-buttons-record'>消费明细</View>
               </View>
             </View>

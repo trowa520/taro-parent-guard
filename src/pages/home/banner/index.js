@@ -1,7 +1,7 @@
 import Taro, {Component} from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Image} from '@tarojs/components'
-import defaultIcon from '../assets/default.png'
-import childrenIcon from '../assets/children.png'
+import defaultIcon from '@assets/default.png'
+import childrenIcon from '@assets/children.png'
 import './index.scss'
 
 export default class SwiperBanner extends Component{
