@@ -2,7 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Map } from '@tarojs/components'
 import { getWindowHeight } from '@utils/style'
 import rightIcon from '@assets/right.png'
-
+import { host } from "@constants/api";
+import { connect } from '@tarojs/redux'
+import { dispatchKids } from '@actions/home'
+import { dispatchSocialiteLogin } from '@actions/user'
 import Banner from './banner'
 import Menu from './menu'
 import Lock from './lock'
@@ -10,24 +13,166 @@ import Analysis from './analysis'
 import AMap from './map'
 import './home.scss'
 
+@connect(state => state.home, { dispatchKids, dispatchSocialiteLogin })
 export default class Home extends Component {
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
   config = {
     navigationBarTitleText: '守护'
   }
 
-  state = {
-    showLocation: true
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLocation: true,
+      kids: []
+    }
   }
-  // 加载数据
-  componentDidMount () { }
+  // 判断用户登录状态
+  componentDidMount() {
+    var that = this
+    Taro.getStorage({key: 'token'}).then(res => {
+      if (res.data === '') {
+        that.isNeedToLogin()
+      }
+    }).catch(err => {
+      that.isNeedToLogin()
+    })
+    this.props.dispatchKids().then(res => {
+      that.setState({
+        kids : res.data
+      })
+    })
+  }
+
+  // 判断是否需要登录
+  isNeedToLogin() {
+    var that = this
+    // 判断是否需要获取openId
+    Taro.getStorage({key: 'openId'}).then(res => {
+      if (res.data === '') {
+        that.getCode()
+      } else {
+        that.socialiteLogin(res.data)
+      }
+    }).catch(err => {
+      that.getCode()
+    })
+  }
+  // 获取code
+  getCode() {
+    var that = this
+    if (process.env.TARO_ENV === 'weapp') {
+      Taro.showLoading()
+      Taro.login().then(res => {
+        let code = res.code
+        that.code2Session(code)
+      })
+    } else if (process.env.TARO_ENV === 'h5') {
+      Taro.showLoading()
+      let code = Home.getParamsFormUrl("code")
+      that.code2Session(code)
+    }
+  }
+  // 利用code 获取 openId
+  code2Session(code) {
+    var that = this
+    var platform = ''
+    var openIdColumn = ''
+    if (process.env.TARO_ENV === 'weapp') {
+      platform = 'ma'
+      openIdColumn = 'openid'
+    } else if (process.env.TARO_ENV === 'h5'){
+      platform = 'mp'
+      openIdColumn = 'openId'
+    }
+    Taro.request({
+      url: `${host}/wx/${platform}/code2Session`,
+      data:{ code: code },
+      method: "GET",
+      success: res => {
+        if (res.data['status'] === 'success') {
+          let openId = res.data.data[openIdColumn]
+          Taro.setStorage({ key: 'openId', data: openId || '' })
+          that.socialiteLogin(openId)
+        } else {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({
+              url: '/pages/login/login'
+            })
+          } else {
+            Taro.navigateTo({
+              url: '/pages/login/login'
+            })
+          }
+        }
+      },
+      fail: err =>  {
+        if (process.env.TARO_ENV === 'weapp') {
+          Taro.reLaunch({
+            url: '/pages/login/login'
+          })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/login/login'
+          })
+        }
+      }
+    })
+  }
+  // 第三方登陆
+  socialiteLogin(openId) {
+    Taro.request({
+      url: `${host}/api/user/social-login`,
+      header: { "content-type": 'application/x-www-form-urlencoded' },
+      data: { openId: openId, provider: process.env.TARO_ENV },
+      method: "POST",
+      success: res => {
+        Taro.hideLoading()
+        if(res.data['status'] === 'success'){
+          Taro.setStorage({ key: 'token', data: res.data.data['token'] || '' })
+          Taro.setStorage({ key: 'user', data: res.data.data['user'] || ''})
+        } else if (res.data.data['errorCode'] === 20001) {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({
+              url: '/pages/register/register'
+            })
+          } else {
+            Taro.navigateTo({
+              url: '/pages/register/register'
+            })
+          }
+        } else {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({
+              url: '/pages/login/login'
+            })
+          } else {
+            Taro.navigateTo({
+              url: '/pages/login/login'
+            })
+          }
+        }
+      },
+      fail: err => {
+        if (process.env.TARO_ENV === 'weapp') {
+          Taro.reLaunch({
+            url: '/pages/login/login'
+          })
+        } else {
+          Taro.navigateTo({
+            url: '/pages/login/login'
+          })
+        }
+      }
+    })
+  }
+  static getParamsFormUrl(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(decodeURI(r[2]));
+    return '';
+  }
+
   onTap = () => {
     console.log('获取定位信息')
   }
@@ -36,28 +181,6 @@ export default class Home extends Component {
     // if (!this.state.loaded) {
     //   return <Loading />
     // }
-    const children = [
-      {
-        id: '1',
-        name: 'ming',
-        os: 'Redmi note 7',
-        battery: '51',
-        isOnline: '1',
-        appCount: '7',
-        waring: '3',
-        avatar: ''
-      },
-      {
-        id: '1',
-        name: 'li',
-        os: 'iPhone 7s',
-        battery: '80',
-        isOnline: '0',
-        appCount: '10',
-        waring: '5',
-        avatar: 'http://api.leerzhi.com.cn/images/default/female.png'
-      }
-    ]
     const analysis = [
       {
         id: 1,
@@ -78,6 +201,7 @@ export default class Home extends Component {
         icon: ''
       }
     ]
+
     return (
       <View className='home'>
         <ScrollView
@@ -86,7 +210,7 @@ export default class Home extends Component {
           // onScrollToLower={this.loadRecommend}
           style={{ height: getWindowHeight() }}
         >
-          <Banner list={children} />
+          <Banner list={this.state.kids} />
           <Menu />
           <Lock />
           <Analysis list={analysis} />

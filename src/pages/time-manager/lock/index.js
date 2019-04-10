@@ -7,53 +7,27 @@ import './index.scss'
 
 export default class Lock extends Component {
 
-  static defaultProps = {
-    state : {
-      day: {},
-      currentDate: {},
-    }
+  onChangeCurrentDay = (currentDay, dates) => {
+    this.props.onChangeCurrentDay(currentDay, dates)
   }
 
-  componentWillMount() {
-    let day = new Date().getDay()
-    const { dates } = this.props
-    console.log(dates)
-
-    let currentDate = dates[day]
-    this.setState({
-      day: day,
-      currentDate: currentDate
-    })
-  }
-
-  componentDidMount() {
-
-  }
-  onChangeDate = (item, index) => {
-    this.setState({
-      day: index,
-      currentDate: item
-    })
-  }
-
-  onCheckedHours = (item) => {
-    let params = {day: this.state.day, id: item.id, isChecked: !item.isChecked}
-    this.props.onHandleLockDate(params)
+  onSelectHour = (item, dates) => {
+    let selectedHour = {hour: item.id, isChecked: !item.isChecked}
+    this.props.onSelectHour(selectedHour, dates)
   }
 
   render() {
-    const { dates } = this.props
-    const { day, currentDate } = this.state
+    const { dates, currentDay } = this.props
     return (
       <View className='time-manager-lock'>
         <View className='time-manager-lock-tips'>
           锁屏时间段手机只能用来打电话发短信
         </View>
         <View className='time-manager-lock-week'>
-          {dates.map((item, index) => {
+          {dates.map((item) => {
               return (
-                <View className='time-manager-lock-week-item' onClick={this.onChangeDate.bind(this, item, index)}>
-                  <View className={classNames('time-manager-lock-week-item-detail',day === index && 'time-manager-lock-week-item-detail--active')}>
+                <View className='time-manager-lock-week-item' onClick={this.onChangeCurrentDay.bind(this, item, dates)}>
+                  <View className={classNames('time-manager-lock-week-item-detail',currentDay.num === item.num && 'time-manager-lock-week-item-detail--active')}>
                     {item.name}
                   </View>
                 </View>
@@ -61,7 +35,7 @@ export default class Lock extends Component {
             })}
         </View>
         <View className='time-manager-lock-top'>
-          <View className='time-manager-lock-top-title'>周{currentDate.name}时间设置</View>
+          <View className='time-manager-lock-top-title'>周{currentDay.name}时间设置</View>
           <View className='time-manager-lock-top-free'>
             <View className='time-manager-lock-top-free-color'>
             </View>
@@ -83,11 +57,11 @@ export default class Lock extends Component {
             </View>
           </View>
           <View className='time-manager-lock-bottom-hours'>
-            {currentDate.hours.map(item => {
+            {currentDay.hours.map(item => {
               return (
                 <View
                   className={classNames('time-manager-lock-bottom-hours-item', {'time-manager-lock-bottom-hours-item--active': item.isChecked})}
-                  onClick={this.onCheckedHours.bind(this, item)}
+                  onClick={this.onSelectHour.bind(this, item, dates)}
                 >
                   {item.id}
                 </View>

@@ -20,9 +20,9 @@ class App extends Component {
 
   config = {
     pages: [
-      // 'pages/login/login',
-      // 'pages/register/register',
       'pages/home/home',
+      'pages/login/login',
+      'pages/register/register',
       'pages/statistics/statistics',
       'pages/discover/discover',
       'pages/profile/profile',

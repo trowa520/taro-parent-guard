@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import jump from '@utils/jump'
 import rightIcon from '@assets/right.png'
 import deviceIcon from '@assets/device.png'
 import List from './list'

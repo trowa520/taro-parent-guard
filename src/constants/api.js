@@ -10,10 +10,17 @@ export const hostM = HOST_M
 // pic
 export const CDN = 'https://yanxuan.nosdn.127.net'
 
-// login
-export const API_LOGIN = `${host}/api/login`
-
 // user
 export const API_USER = `${host}/api/user`
-export const API_USER_LOGIN = `${host}/api/login`
-export const API_CHECK_LOGIN = `${host}/xhr/u/checkLogin.json`
+export const API_USER_LOGIN = `${host}/api/user/login`
+export const API_USER_SOCIALITE_LOGIN = `${host}/api/user/social-login`
+export const API_USER_REGISTER = `${host}/api/user/register`
+
+//WEAPP
+export const API_CODE_TO_SESSION=`${hostM}/wx/ma/code2Session`
+
+// 获取孩子信息
+export const API_MY_KIDS = `${host}/api/user/kids`
+
+// 获取短信验证码
+export const API_SMS_CODE = `${host}/api/user/getotp`

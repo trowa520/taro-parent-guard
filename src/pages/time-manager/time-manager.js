@@ -17,6 +17,7 @@ export default class Index extends Component {
     super(props)
   }
   state = {
+    lockDates: [],
     dates: [
       {
         num: 7,
@@ -83,7 +84,7 @@ export default class Index extends Component {
         ],
       }
     ],
-    day:{},
+    currentDay:{},     // 当前日期
     current: 1, // 顶部tab 默认选择的位置
     tabs : [
       {
@@ -127,8 +128,59 @@ export default class Index extends Component {
     navigationBarTitleText: '时间管理'
   }
 
-  onHandleLockDate = (dates, item) => {
-    this.props.dispatchAddLockDate({ dates:dates, day:item})
+  componentWillMount() {
+    let day = new Date().getDay()
+    let currentDay = this.state.dates[day]
+    this.setState({
+      currentDay: currentDay
+    })
+  }
+
+  // 改变当前选择的日期
+  onChangeCurrentDay = (currentDay, dates) => {
+    this.setState({
+      dates: dates,
+      currentDay: currentDay
+    })
+  }
+
+  // 改变当前选择的时间
+  onCheckedHour = (selectedHour, dates) => {
+    this.updateHourStatus(selectedHour, dates)
+  }
+
+  // 更新选中状态
+  updateHourStatus = (selectedHour, dates) => {
+    var that = this
+    let { hour, isChecked } = selectedHour
+    let { currentDay } = this.state
+    dates.forEach(item => {
+      if (item.num === currentDay.num) {
+        item.hours.forEach((it, i) => {
+          if(hour === i) {
+            it.isChecked = isChecked
+          }
+        })
+        currentDay.hours.forEach((it, i) => {
+          if(hour === i) {
+            it.isChecked = isChecked
+          }
+        })
+      }
+    })
+    console.log(currentDay.num)
+
+    if (isChecked) {
+      that.setState({
+        dates: dates,
+        lockDates: that.state.lockDates.concat(currentDay)
+      })
+    } else {
+      that.setState({
+        dates: dates,
+        lockDates: that.state.lockDates.filter(item => item.id !== currentDay.id)
+      })
+    }
   }
 
   handleMenu = (index) => {
@@ -142,7 +194,7 @@ export default class Index extends Component {
   }
 
   render () {
-    const { tabs, current } = this.state
+    const { tabs, current, currentDay, dates } = this.state
     const height = getWindowHeight(false)
     return (
       <View className='time-manager'>
@@ -185,7 +237,12 @@ export default class Index extends Component {
                     </View>
                   </View>
                   <View className='time-manager__swiper-item-view2' hidden={current !== 1}>
-                    <Lock onHandleLockDate={this.onHandleLockDate.bind(this, this.state.dates)} dates={this.state.dates}/>
+                    <Lock
+                      onSelectHour={this.onCheckedHour.bind(this)}
+                      onChangeCurrentDay={this.onChangeCurrentDay.bind(this)}
+                      dates={dates}
+                      currentDay={currentDay}
+                    />
                   </View>
                 </SwiperItem>
               )

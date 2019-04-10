@@ -1,6 +1,8 @@
 import { USER_INFO, USER_LOGIN, USER_LOGOUT } from '@constants/user'
-import { API_USER, API_USER_LOGIN } from '@constants/api'
+import { API_USER, API_USER_LOGIN, API_USER_SOCIALITE_LOGIN } from '@constants/api'
 import { createAction } from '@utils/redux'
+import { API_USER_REGISTER } from "../constants/api";
+import { USER_REGISTER, USER_SOCIALITE_LOGIN } from "../constants/user";
 
 /**
  * 获取用户信息
@@ -24,6 +26,28 @@ export const dispatchLogin = payload => createAction({
   url: API_USER_LOGIN,
   method: 'POST',
   type: USER_LOGIN,
+  payload
+})
+
+/**
+ * 第三方登录
+ * @param {*} payload
+ */
+export const dispatchSocialiteLogin = payload => createAction({
+  url: API_USER_SOCIALITE_LOGIN,
+  method: 'POST',
+  type: USER_SOCIALITE_LOGIN,
+  payload
+})
+
+/**
+ * 用户注册
+ * @param {*} payload
+ */
+export const dispatchRegister = payload => createAction({
+  url: API_USER_REGISTER,
+  method: 'POST',
+  type: USER_REGISTER,
   payload
 })
 
