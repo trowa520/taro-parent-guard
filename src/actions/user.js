@@ -1,8 +1,17 @@
-import { USER_INFO, USER_LOGIN, USER_LOGOUT } from '@constants/user'
-import { API_USER, API_USER_LOGIN, API_USER_SOCIALITE_LOGIN } from '@constants/api'
+import {
+  USER_INFO,
+  USER_REGISTER,
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_SOCIALITE_LOGIN
+} from '@constants/user'
+import {
+  API_USER,
+  API_USER_LOGIN,
+  API_USER_REGISTER,
+  API_USER_SOCIALITE_LOGIN
+} from '@constants/api'
 import { createAction } from '@utils/redux'
-import { API_USER_REGISTER } from "../constants/api";
-import { USER_REGISTER, USER_SOCIALITE_LOGIN } from "../constants/user";
 
 /**
  * 获取用户信息

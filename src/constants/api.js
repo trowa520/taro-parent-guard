@@ -15,12 +15,15 @@ export const API_USER = `${host}/api/user`
 export const API_USER_LOGIN = `${host}/api/user/login`
 export const API_USER_SOCIALITE_LOGIN = `${host}/api/user/social-login`
 export const API_USER_REGISTER = `${host}/api/user/register`
+export const API_MA_CODE_TO_SESSION=`${hostM}/wx/ma/code2Session`
+export const API_MP_CODE_TO_SESSION=`${hostM}/wx/mp/code2Session`
+export const API_SMS_CODE = `${host}/api/user/getotp` // 获取短信验证码
 
-//WEAPP
-export const API_CODE_TO_SESSION=`${hostM}/wx/ma/code2Session`
-
-// 获取孩子信息
+// kid
 export const API_MY_KIDS = `${host}/api/user/kids`
+export const API_CURRENT_TRACE = `${host}/api/trace/show`
+export const API_KID_APPS = `${host}/api/app/list` // app
 
-// 获取短信验证码
-export const API_SMS_CODE = `${host}/api/user/getotp`
+
+
+

@@ -2,9 +2,8 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Map } from '@tarojs/components'
 import { getWindowHeight } from '@utils/style'
 import rightIcon from '@assets/right.png'
-import { host } from "@constants/api";
 import { connect } from '@tarojs/redux'
-import { dispatchKids } from '@actions/home'
+import * as actions from '@actions/home'
 import { dispatchSocialiteLogin } from '@actions/user'
 import Banner from './banner'
 import Menu from './menu'
@@ -13,7 +12,7 @@ import Analysis from './analysis'
 import AMap from './map'
 import './home.scss'
 
-@connect(state => state.home, { dispatchKids, dispatchSocialiteLogin })
+@connect(state => state.home, { ...actions, dispatchSocialiteLogin })
 export default class Home extends Component {
 
   config = {
@@ -23,10 +22,13 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLocation: true,
-      kids: []
+      kids: [],
+      apps: [],
+      lng: 116.397428,
+      lat: 39.90923,
     }
   }
+
   // 判断用户登录状态
   componentDidMount() {
     var that = this
@@ -34,16 +36,43 @@ export default class Home extends Component {
       if (res.data === '') {
         that.isNeedToLogin()
       }
-    }).catch(err => {
+      that.getKidsInfo();
+    }).catch(() => {
       that.isNeedToLogin()
     })
-    this.props.dispatchKids().then(res => {
-      that.setState({
-        kids : res.data
-      })
+  }
+  // 切换当前孩子
+  onChangeKidIndex = (index) => {
+    var that = this
+    const { kids } = that.state
+    that.getKidCurrentLocation(kids[index]['id'])
+    that.getKidApps(kids[index]['id'])
+  }
+  // 获取所有孩子相关信息
+  getKidsInfo() {
+    var that = this
+    that.props.dispatchKids().then(re => {
+      if (re.data.length > 0) {
+        that.setState({ kids: re.data })
+        that.getKidCurrentLocation(re.data[0]['id'])
+        that.getKidApps(re.data[0]['id'])
+      }
     })
   }
-
+  getKidApps(kidId) {
+    var that = this
+    that.props.dispatchKidApps({kidId: kidId, page: 1, pageSize: 2, order: "day"}).then(res =>{
+      that.setState({ apps: res.data.list })
+    })
+  }
+  // 获取孩子定位信息
+  getKidCurrentLocation(kidId) {
+    var that = this
+    Taro.setStorage({ key: "kidId", data: kidId })
+    that.props.dispatchKidCurrentLocation({kidId: kidId}).then(res => {
+      that.setState({ lng: res.data.lng,  lat: res.data.lat })
+    })
+  }
   // 判断是否需要登录
   isNeedToLogin() {
     var that = this
@@ -54,7 +83,7 @@ export default class Home extends Component {
       } else {
         that.socialiteLogin(res.data)
       }
-    }).catch(err => {
+    }).catch(() => {
       that.getCode()
     })
   }
@@ -76,96 +105,26 @@ export default class Home extends Component {
   // 利用code 获取 openId
   code2Session(code) {
     var that = this
-    var platform = ''
-    var openIdColumn = ''
     if (process.env.TARO_ENV === 'weapp') {
-      platform = 'ma'
-      openIdColumn = 'openid'
+      that.props.dispatchMACodeToOpenId({code: code}).then(res => {
+        that.socialiteLogin(res.data.openid)
+      })
     } else if (process.env.TARO_ENV === 'h5'){
-      platform = 'mp'
-      openIdColumn = 'openId'
+      that.props.dispatchMPCodeToOpenId({code: code}).then(res => {
+        that.socialiteLogin(res.data.openId)
+      })
     }
-    Taro.request({
-      url: `${host}/wx/${platform}/code2Session`,
-      data:{ code: code },
-      method: "GET",
-      success: res => {
-        if (res.data['status'] === 'success') {
-          let openId = res.data.data[openIdColumn]
-          Taro.setStorage({ key: 'openId', data: openId || '' })
-          that.socialiteLogin(openId)
-        } else {
-          if (process.env.TARO_ENV === 'weapp') {
-            Taro.reLaunch({
-              url: '/pages/login/login'
-            })
-          } else {
-            Taro.navigateTo({
-              url: '/pages/login/login'
-            })
-          }
-        }
-      },
-      fail: err =>  {
-        if (process.env.TARO_ENV === 'weapp') {
-          Taro.reLaunch({
-            url: '/pages/login/login'
-          })
-        } else {
-          Taro.navigateTo({
-            url: '/pages/login/login'
-          })
-        }
-      }
-    })
   }
   // 第三方登陆
   socialiteLogin(openId) {
-    Taro.request({
-      url: `${host}/api/user/social-login`,
-      header: { "content-type": 'application/x-www-form-urlencoded' },
-      data: { openId: openId, provider: process.env.TARO_ENV },
-      method: "POST",
-      success: res => {
-        Taro.hideLoading()
-        if(res.data['status'] === 'success'){
-          Taro.setStorage({ key: 'token', data: res.data.data['token'] || '' })
-          Taro.setStorage({ key: 'user', data: res.data.data['user'] || ''})
-        } else if (res.data.data['errorCode'] === 20001) {
-          if (process.env.TARO_ENV === 'weapp') {
-            Taro.reLaunch({
-              url: '/pages/register/register'
-            })
-          } else {
-            Taro.navigateTo({
-              url: '/pages/register/register'
-            })
-          }
-        } else {
-          if (process.env.TARO_ENV === 'weapp') {
-            Taro.reLaunch({
-              url: '/pages/login/login'
-            })
-          } else {
-            Taro.navigateTo({
-              url: '/pages/login/login'
-            })
-          }
-        }
-      },
-      fail: err => {
-        if (process.env.TARO_ENV === 'weapp') {
-          Taro.reLaunch({
-            url: '/pages/login/login'
-          })
-        } else {
-          Taro.navigateTo({
-            url: '/pages/login/login'
-          })
-        }
-      }
+    var that = this
+    let data = { openId: openId, provider: process.env.TARO_ENV }
+    that.props.dispatchSocialiteLogin(data).then(() => {
+      Taro.hideLoading()
+      that.getKidsInfo()
     })
   }
+  // 获取url路径参数
   static getParamsFormUrl(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
@@ -181,27 +140,13 @@ export default class Home extends Component {
     // if (!this.state.loaded) {
     //   return <Loading />
     // }
-    const analysis = [
-      {
-        id: 1,
-        name: '王者荣耀',
-        time: '5小时10分钟52秒',
-        icon: ''
-      },
-      {
-        id: 2,
-        name: '爱奇艺',
-        time: '4小时03分钟12秒',
-        icon: 'http://api.leerzhi.com.cn/images/default/female.png'
-      },
-      {
-        id: 3,
-        name: '微信',
-        time: '2小时10分钟52秒',
-        icon: ''
-      }
-    ]
-
+    const {lng, lat, apps } = this.state
+    const markers = [{
+      latitude: lat,
+      longitude: lng,
+      width: 25,
+      height: 25
+    }]
     return (
       <View className='home'>
         <ScrollView
@@ -209,11 +154,12 @@ export default class Home extends Component {
           className='home__wrap'
           // onScrollToLower={this.loadRecommend}
           style={{ height: getWindowHeight() }}
+
         >
-          <Banner list={this.state.kids} />
+          <Banner list={this.state.kids} onChangeSwipper={this.onChangeKidIndex.bind(this)}/>
           <Menu />
           <Lock />
-          <Analysis list={analysis} />
+          <Analysis list={apps} />
           <View className='map'>
             <View className='map-top'>
               <View className='map-top-text'>设备位置</View>
@@ -221,8 +167,8 @@ export default class Home extends Component {
               <Image className='map-top-img' src={rightIcon} />
             </View>
             <View style='padding: 10px;'>
-              <Map id='container' showLocation={this.state.showLocation} latitude='34.82427' longitude='113.56256000000002' />
-              <AMap />
+              <Map id='container' markers={markers} latitude={lat} longitude={lng} />
+              <AMap lng={lng} lat={lat} />
             </View>
           </View>
         </ScrollView>

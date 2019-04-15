@@ -46,11 +46,6 @@ export default class Login extends Component {
           icon: 'none'
         })
       }
-    }).catch(err=>{
-      Taro.showToast({
-        title: "服务器故障",
-        icon: 'none'
-      })
     })
   }
 

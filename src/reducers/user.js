@@ -1,4 +1,4 @@
-import { USER_INFO, USER_LOGIN, USER_LOGOUT } from '@constants/user'
+import { USER_INFO, USER_LOGIN, USER_LOGOUT, USER_SOCIALITE_LOGIN } from '@constants/user'
 
 const INITIAL_STATE = {
   userInfo: {}
@@ -10,7 +10,7 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         userInfo: {
-          ...action.payload,
+          ...action.payload.data.user,
           login: true
         }
       }
@@ -19,7 +19,15 @@ export default function user(state = INITIAL_STATE, action) {
       return {
         ...state,
         userInfo: {
-          ...action.payload.user
+          ...action.payload.data.user
+        }
+      }
+    }
+    case USER_SOCIALITE_LOGIN: {
+      return {
+        ...state,
+        userInfo: {
+          ...action.payload.data.user
         }
       }
     }

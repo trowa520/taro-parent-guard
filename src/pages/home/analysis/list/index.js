@@ -25,7 +25,7 @@ export default class AnalysisList extends Component{
                 <Image className='analysis-list-item-cycle-icon' src={item.icon === '' ? deviceIcon : item.icon} />
                 <View className='analysis-list-item-cycle-detail'>
                   <View className='analysis-list-item-cycle-detail-app'>{item.name}</View>
-                  <View className='analysis-list-item-cycle-detail-time'>{item.time}</View>
+                  <View className='analysis-list-item-cycle-detail-time'>{item.dayCostSeconds}</View>
                 </View>
                 <View className='analysis-list-item-cycle-manager' onClick={this.onClick.bind(this, item)}>管理</View>
               </View>

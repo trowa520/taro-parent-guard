@@ -9,13 +9,24 @@ export default class SwiperBanner extends Component{
     list: []
   }
 
+  state = {
+    currentIndex : 0
+  }
+  onChangeSwipper = (e) => {
+    this.setState({
+      currentIndex: e.detail.current
+    })
+    this.props.onChangeSwipper(e.detail.current)
+  }
+
   render() {
     const { list } = this.props
+    const { currentIndex } = this.state
     return (
       <View className='home-banner'>
         <Image className='children-img' src={childrenIcon} />
         <Swiper className='home-banner__swiper'
-          circular indicatorDots indicatorActiveColor='rgb(255,255,255)'
+          circular indicatorDots indicatorActiveColor='rgb(255,255,255)' current={currentIndex} onChange={this.onChangeSwipper.bind(this)}
         >
           {list.map(item => (
             <SwiperItem key={item.id} className='home-banner__swiper-item'>
