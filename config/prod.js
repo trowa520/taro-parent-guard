@@ -1,22 +1,32 @@
 const isH5 = process.env.CLIENT_ENV === 'h5'
 
-const HOST = '"https://miniapp.you.163.com"'
-const HOST_M = '"https://m.you.163.com"'
+// 本机域名
+const HOST = '"http://parent.leerzhi.com.cn/api"'
 
-// XXX 搭了个 proxy 用于演示 prod 环境的 H5
-const HOST_H5 = '"http://jsnewbee.com/taro-yanxuan/api"'
-const HOST_M_H5 = '"http://jsnewbee.com/taro-yanxuan/api-m"'
+// 接口域名
+const HOST_API = '"http://pg.leerzhi.cn/api"'
 
 module.exports = {
   env: {
     NODE_ENV: '"production"'
   },
   defineConstants: {
-    HOST: isH5 ? HOST_H5 : HOST,
-    HOST_M: isH5 ? HOST_M_H5 : HOST_M
+    HOST: isH5 ? HOST_API : HOST,
   },
   weapp: {},
   h5: {
-    publicPath: '/taro-yanxuan'
+    publicPath: './',
+    devServer: {
+      disableHostCheck: true,
+      proxy: {
+        '/api/': {
+          target: JSON.parse(HOST),
+          pathRewrite: {
+            '^/api/': '/'
+          },
+          changeOrigin: true
+        }
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import Taro, {Component} from '@tarojs/taro'
+import {View} from '@tarojs/components'
 import classNames from 'classnames'
 import './index.scss'
 
@@ -12,23 +12,21 @@ export default class Product extends Component {
     }
   }
 
-  onClickItem = (item, index) =>{
-    console.log(item)
-    this.setState({
-      current: index
-    })
+  onClickItem = (item, index) => {
+    this.setState({current: index})
+    this.props.onChooseProduct(item, index)
   }
 
   render() {
-   const { current } = this.state
-   const { products } = this.props
+    const {current} = this.state
+    const {products} = this.props
     return (
       <View className='products'>
         {products.map((item, index) => {
           return (
-            <View className={classNames('products-item', {'products-item--active': index === current })} onClick={this.onClickItem.bind(this, item, index)}>
+            <View className={classNames('products-item', {'products-item--active': index === current})} onClick={this.onClickItem.bind(this, item, index)}>
               <View className='products-item-title'>
-                {item.title}
+                {item.name}
               </View>
               <View className='products-item-price'>
                 <View className='products-item-price-coin'>￥</View>{item.price}

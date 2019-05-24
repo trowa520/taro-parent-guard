@@ -1,0 +1,11 @@
+export const WX_MA_UNIFIED_ORDER = 'WX_MA_UNIFIED_ORDER'      // 微信小程序统一下单
+export const WX_MP_UNIFIED_ORDER = 'WX_MP_UNIFIED_ORDER'      // 微信公众号统一下单
+export const WX_MA_CREATE_ORDER = 'WX_MA_CREATE_ORDER'        // 微信小程序创建订单
+export const WX_MP_CREATE_ORDER = 'WX_MP_CREATE_ORDER'        // 微信公众号创建订单
+export const UPDATE_KID = 'UPDATE_KID'                        // 更新孩子信息
+export const MY_KIDS = 'MY_KIDS'                              // 获取孩子信息
+export const PRODUCTS = 'PRODUCTS'                            // 获取产品列表
+export const USER_INFO = 'USER_INFO'                          // 获取用户信息
+export const UNBIND = 'UNBIND'                                // 解除绑定
+export const MANAGERS='MANAGERS'                              // 管理员列表
+export const ADD_MANAGER='ADD_MANAGER'                        // 添加管理员

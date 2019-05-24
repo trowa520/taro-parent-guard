@@ -2,7 +2,7 @@
   "miniprogramRoot": "./dist",
   "projectname": "parent-guard",
   "description": "parent guard for children",
-  "appid": "touristappid",
+  "appid": "wx7a54f233a82d05ff",
   "setting": {
     "urlCheck": false,
     "es6": false,

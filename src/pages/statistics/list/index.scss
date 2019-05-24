@@ -1,5 +1,6 @@
 .statistics-list {
   background: white;
+
   &-item {
     height: 145px;
     display: flex;;
@@ -7,29 +8,56 @@
     justify-content: space-between;
     border: 0 solid #f0f0f0;
     border-bottom-width: 2px;
+
     &-cycle {
       width: 100%;
       display: flex;
       flex-direction: row;
       align-items: center;
+
       &-icon {
         margin-left: 25px;
         height: 96px;
         width: 96px;
       }
+
+      //&-detail {
+      //  flex: 2;
+      //  display: flex;
+      //  justify-content: space-between;
+      //  align-items: center;
+      //  &-app {
+      //    margin-left: 15px;
+      //    font-size: 30px;
+      //    color: #444444;
+      //  }
+      //  &-time {
+      //    margin-right: 30px;
+      //    font-size: 28px;
+      //    color: #999999;
+      //  }
+      //
+      //
+      //}
       &-detail {
         flex: 2;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 30px;
+
         &-app {
-          margin-left: 15px;
+          width: 400px;
+          overflow: hidden;
+          height: 48px;
+          display: flex;
+          align-items: center;
           font-size: 30px;
           color: #444444;
         }
+
         &-time {
-          margin-right: 30px;
-          font-size: 28px;
+          font-size: 24px;
           color: #999999;
         }
       }

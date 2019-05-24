@@ -35,26 +35,25 @@
       width: 15px;
     }
   }
-
   &-bottom {
     width: 100%;
     height: 160px;
     display: flex;
     flex-direction: row;
     align-items: center;
-
-
     &-img {
       margin-left: 25px;
       height: 96px;
       width: 96px;
     }
-
     &-text {
       margin-left: 25px;
       font-size: 30px;
       color: #555555;
       flex: 2;
+      &-red {
+        color: red;
+      }
     }
     &-switch {
       margin-right: 25px;

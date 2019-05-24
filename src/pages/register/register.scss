@@ -3,6 +3,7 @@
   height: 100%;
   width: 100%;
 }
+
 .top-bg-view {
   background: #02ca73;
   height: 546px;
@@ -12,6 +13,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .hello-view {
   margin-top: 40px;
   margin-left: 40px;
@@ -19,12 +21,14 @@
   font-size: 70px;
   color: white;
 }
+
 .welcome-view {
   margin-left: 40px;
   margin-bottom: 60px;
   color: white;
   font-size: 32px;
 }
+
 .form-view {
   position: absolute;
   top: 380px;
@@ -33,87 +37,91 @@
   display: flex;
   flex-direction: column;
 }
+
 //
 .register-name-password-bg {
-  height: 450px;
+  height: 420px;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   border-radius: 10px;
   box-shadow: 2px 2px 26px #888888;
 }
+
 // 输入框 占位符 字体颜色
 input::-webkit-input-placeholder {
   color: rgb(230, 230, 230);
 }
+
 // 输入框背景样式
 .input-view {
-  width: 100%;
-  height: 100%;
+  margin-top: 30px;
+  width: 630px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 // 发送验证码样式
 .code-view {
-  margin-left: 30px;
-  margin-right: 30px;
-  height: 65%;
+  margin-top: 30px;
+  width: 630px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 手机号输入框样式
 .mobile-input {
   width: 100%;
-  height: 65%;
-  margin-top: 30px;
-  margin-left: 30px;
+  height: 100px;
   padding-left: 30px;
-  margin-right: 30px;
-  font-size: 36px;
+  font-size: 30px;
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 验证码输入框样式
 .code-input {
-  width: 100%;
   height: 100px;
   padding-left: 30px;
   margin-right: 30px;
-  font-size: 36px;
+  font-size: 30px;
 }
+
 // 发送验证码按钮样式
 .send-code-button {
-  font-size: 36px;
+  font-size: 30px;
   color: #02ca73;
   background: none;
   border: none;
 }
+
 // 密码输入框样式
 .password-input {
   width: 100%;
   height: 100px;
-  margin-left: 30px;
   padding-left: 30px;
-  margin-right: 30px;
-  margin-bottom: 30px;
-  font-size: 36px;
+  font-size: 30px;
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 登录按钮背景样式
 .button-bg-view {
   margin-top: 40px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 // 登录按钮样式
 .login-button {
   width: 100%;
@@ -125,4 +133,10 @@ input::-webkit-input-placeholder {
   font-size: 34px;
 }
 
+.goto-login {
+  font-size: 26px;
+  color: #02ca73;
+  margin-top: 60px;
+
+}
 

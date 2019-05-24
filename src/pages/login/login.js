@@ -1,65 +1,64 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Input, Button } from '@tarojs/components'
-import jump from '@utils/jump'
-import { connect } from '@tarojs/redux'
+import Taro, {Component} from '@tarojs/taro'
+import {View, Input, Button} from '@tarojs/components'
+import {connect} from '@tarojs/redux'
 import * as actions from '@actions/user'
 import './login.scss'
 
-@connect(state => state.user, { ...actions})
+@connect(state => state.user, {...actions})
 export default class Login extends Component {
 
-  /**
-   * 指定config的类型声明为: Taro.Config
-   *
-   * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
-   * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
-   */
   config = {
     navigationBarTitleText: '登录',
     tabBar: ''
   }
 
-  componentWillMount() {
-    this.props.dispatchLogin({mobile: '15637261076', password: '123456789'}).then((res) => {
-      if (res.code === 0) {
-        jump({
-          url: '/pages/register/register'
-        })
-      } else {
+  state = {
+    mobile: '',
+    password: ''
+  }
 
+  login = () => {
+    const {mobile, password} = this.state
+    if (!(/^1[23456789]\d{9}$/.test(mobile))) {
+      Taro.showToast({title: '请输入正确的手机号', icon: 'none'})
+      return;
+    }
+    if (password === '') {
+      Taro.showToast({title: '请输入密码', icon: 'none'})
+      return;
+    }
+    this.props.dispatchLogin({mobile: mobile, password: password}).then((res) => {
+      if (res.status === "success") {
+        Taro.switchTab({url: '/pages/home/home'})
+      } else {
+        Taro.showToast({title: res.data.errorMessage, icon: 'none'})
       }
     })
   }
 
-  componentWillUnmount () { }
-
-  componentDidShow () {
-
+  onHandleMobileInput = (e) => {
+    this.setState({mobile: e.detail.value})
+  }
+  onHandlePasswordInput = (e) => {
+    this.setState({password: e.detail.value})
   }
 
-  componentDidHide () { }
-
-  login = () => {
-    Taro.navigateTo({
-      url: '/pages/register/register'
-    })
-  }
-
-  render () {
+  render() {
     return (
       <View className='app'>
         <View className='top-bg-view'>
           <View className='hello-view'>您好！</View>
-          <View className='welcome-view'>欢迎登录家长守护</View>
+          <View className='welcome-view'>欢迎登录家长护航</View>
         </View>
         <View className='form-view'>
           <View className='name-password-bg'>
             <View className='name-view'>
-              <Input className='mobile-input' type='text' placeholder='请输入手机号' />
+              <Input className='mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'
+                     value={this.state.mobile}/>
             </View>
             <View className='password-view'>
-              <Input className='password-input' type='text' placeholder='请输入密码' />
+              <Input className='password-input' type='password' onChange={this.onHandlePasswordInput} placeholder='请输入密码'
+                     value={this.state.password}/>
             </View>
           </View>
           <View className='button-bg-view'>

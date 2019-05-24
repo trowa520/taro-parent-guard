@@ -8,14 +8,14 @@
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
     "build:tt": "taro build --type tt",
-    "build:h5": "taro build --type h5",
-    "build:rn": "taro build --type rn",
+    "build:h5": "cross-env CLIENT_ENV=h5 taro build --type h5",
+    "build:rn": "cross-env CLIENT_ENV=rn taro build --type rn",
     "dev:weapp": "npm run build:weapp -- --watch",
     "dev:swan": "npm run build:swan -- --watch",
     "dev:alipay": "npm run build:alipay -- --watch",
     "dev:tt": "npm run build:tt -- --watch",
-    "dev:h5": "npm run build:h5 -- --watch",
-    "dev:rn": "npm run build:rn -- --watch"
+    "dev:h5": "cross-env CLIENT_ENV=h5 npm run build:h5 -- --watch",
+    "dev:rn": "cross-env CLIENT_ENV=rn npm run build:rn -- --watch"
   },
   "author": "",
   "license": "MIT",
@@ -62,6 +62,8 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-taro": "1.2.20",
     "eslint-plugin-typescript": "^0.14.0",
-    "fbjs": "^1.0.0"
+    "fbjs": "^1.0.0",
+    "qrcodejs2": "^0.0.2",
+    "weapp-qrcode": "^1.0.0"
   }
 }

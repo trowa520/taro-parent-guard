@@ -1,18 +1,31 @@
 import Taro from '@tarojs/taro'
-import { API_USER, API_USER_LOGIN } from '@constants/api'
+import {
+  API_USER_LOGIN,
+  API_USER_REGISTER,
+  API_USER_SOCIALITE_LOGIN,
+  API_MA_CODE_TO_SESSION,
+  API_MP_CODE_TO_SESSION,
+} from '@constants/api'
 
-const CODE_SUCCESS = 0
-const CODE_AUTH_EXPIRED = 401
+const CODE_SUCCESS = "success"    // 请求成功
+const CODE_AUTH_EXPIRED = 10002   // 登录过期
+const USER_NO_EXIST = 20001       // 用户不存在
 
 function getStorage(key) {
-  return Taro.getStorage({ key }).then(res => res.data).catch(() => '')
+  return Taro.getStorage({key}).then(res => res.data).catch(() => '')
 }
 
-function updateStorage(data = {}) {
-  return Promise.all([
-    Taro.setStorage({ key: 'token', data: data['access_token'] || '' }),
-    Taro.setStorage({ key: 'uid', data: data['user']['id'] || ''})
-  ])
+function updateStorage(res = {}) {
+  Taro.setStorage({key: 'token', data: res.data['token'] || ''})
+  Taro.setStorage({key: 'userInfo', data: res.data['user'] || ''})
+}
+
+function updateMaOpenId(res = {}) {
+  Taro.setStorage({key: 'openId', data: res.data['openid'] || ''})
+}
+
+function updateMpOpenId(res = {}) {
+  Taro.setStorage({key: 'openId', data: res.data['openId'] || ''})
 }
 
 /**
@@ -21,53 +34,62 @@ function updateStorage(data = {}) {
  * @param {*} options
  */
 export default async function fetch(options) {
-  const { url, payload, method = 'GET', showToast = true, autoLogin = true } = options
+  const {url, payload, method = 'GET', auth = false, json = false} = options
   const token = await getStorage('token')
-  const header = token ? { 'Authorization': token } : {}
-  if (method === 'POST') {
-    header['content-type'] = 'application/json'
+  if (auth && token === '') {
+    if (process.env.TARO_ENV === 'weapp') {
+      Taro.reLaunch({url: '/pages/login/login'})
+    } else {
+      Taro.navigateTo({url: '/pages/login/login'})
+    }
   }
+  var header = token ? {'Authorization': 'Bearer ' + token} : {}
 
+  if (method === 'POST' && json === false) {
+    header['content-type'] = 'application/x-www-form-urlencoded'
+  } else {
+    header['content-type'] = 'application/json;charset=UTF-8'
+  }
+  
   return Taro.request({
     url,
     method,
     data: payload,
     header
   }).then(async (res) => {
-    if (res.data.code !== CODE_SUCCESS) {
-      if (res.data.code === CODE_AUTH_EXPIRED) {
+    if (res.data.status !== CODE_SUCCESS) {
+      if (res.data.status === CODE_AUTH_EXPIRED) {
         await updateStorage({})
       }
-      return Promise.reject(res.data)
+      if (url === API_USER_LOGIN || url === API_USER_SOCIALITE_LOGIN) {
+        if (res.data.data.errorCode === USER_NO_EXIST) {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({url: '/pages/register/register'})
+          } else {
+            Taro.navigateTo({url: '/pages/register/register'})
+          }
+        } else {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({url: '/pages/login/login'})
+          } else {
+            Taro.navigateTo({url: '/pages/login/login'})
+          }
+        }
+      }
     }
-
-    if (url === API_USER_LOGIN) {
+    // 更新用户信息
+    if (url === API_USER_LOGIN || url === API_USER_REGISTER || url === API_USER_SOCIALITE_LOGIN) {
       await updateStorage(res.data)
     }
-
-    // XXX 用户信息需展示 uid，但是 uid 是登录接口就返回的，比较蛋疼，暂时糅合在 fetch 中解决
-
-    // if (url === API_USER) {
-    //   const uid = await getStorage('uid')
-    //   return { ...res.data, uid }
-    // }
-
+    // 更新openId
+    if (url === API_MP_CODE_TO_SESSION) {
+      await updateMpOpenId(res.data)
+    }
+    if (url === API_MA_CODE_TO_SESSION) {
+      await updateMaOpenId(res.data)
+    }
     return res.data
   }).catch((err) => {
-    const defaultMsg = err.code === CODE_AUTH_EXPIRED ? '登录失效' : '请求异常'
-    if (showToast) {
-      Taro.showToast({
-        title: err && err.errorMsg || defaultMsg,
-        icon: 'none'
-      })
-    }
-
-    if (err.code === CODE_AUTH_EXPIRED && autoLogin) {
-      Taro.navigateTo({
-        url: '/pages/login/login'
-      })
-    }
-
-    return Promise.reject({ message: defaultMsg, ...err })
+    return {message: err.data.errorMessage, ...err}
   })
 }

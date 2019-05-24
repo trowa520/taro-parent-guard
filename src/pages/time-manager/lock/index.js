@@ -1,67 +1,42 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-
+import Taro, {Component} from '@tarojs/taro'
+import {View} from '@tarojs/components'
 import classNames from 'classnames'
-
 import './index.scss'
 
 export default class Lock extends Component {
 
-  static defaultProps = {
-    state : {
-      day: {},
-      currentDate: {},
-    }
+  onChangeCurrentDay = (currentDay, dates) => {
+    this.props.onChangeCurrentDay(currentDay, dates)
   }
 
-  componentWillMount() {
-    let day = new Date().getDay()
-    const { dates } = this.props
-    console.log(dates)
-
-    let currentDate = dates[day]
-    this.setState({
-      day: day,
-      currentDate: currentDate
-    })
+  onSelectHour = (item) => {
+    this.props.onSelectHour(item)
   }
 
-  componentDidMount() {
-
-  }
-  onChangeDate = (item, index) => {
-    this.setState({
-      day: index,
-      currentDate: item
-    })
-  }
-
-  onCheckedHours = (item) => {
-    let params = {day: this.state.day, id: item.id, isChecked: !item.isChecked}
-    this.props.onHandleLockDate(params)
+  onClickAddScreenSchedule = () => {
+    this.props.onClickSure()
   }
 
   render() {
-    const { dates } = this.props
-    const { day, currentDate } = this.state
+    const {currentDay, dates, screenList} = this.props
     return (
       <View className='time-manager-lock'>
         <View className='time-manager-lock-tips'>
           锁屏时间段手机只能用来打电话发短信
         </View>
         <View className='time-manager-lock-week'>
-          {dates.map((item, index) => {
-              return (
-                <View className='time-manager-lock-week-item' onClick={this.onChangeDate.bind(this, item, index)}>
-                  <View className={classNames('time-manager-lock-week-item-detail',day === index && 'time-manager-lock-week-item-detail--active')}>
-                    {item.name}
-                  </View>
-                </View>
-              )
-            })}
+          {dates.map((item) => {
+            return (
+              <View className='time-manager-lock-week-item' onClick={this.onChangeCurrentDay.bind(this, item, dates)}>
+                <View
+                  className={classNames('time-manager-lock-week-item-detail', currentDay.num === item.num && 'time-manager-lock-week-item-detail--active')}
+                >{item.name}</View>
+              </View>
+            )
+          })}
         </View>
         <View className='time-manager-lock-top'>
-          <View className='time-manager-lock-top-title'>周{currentDate.name}时间设置</View>
+          <View className='time-manager-lock-top-title'>周{currentDay.name}时间设置</View>
           <View className='time-manager-lock-top-free'>
             <View className='time-manager-lock-top-free-color'>
             </View>
@@ -76,26 +51,36 @@ export default class Lock extends Component {
         <View className='time-manager-lock-bottom'>
           <View className='time-manager-lock-bottom-time'>
             <View className='time-manager-lock-bottom-time-am'>
-                上午
+              上午
             </View>
             <View className='time-manager-lock-bottom-time-pm'>
-                下午
+              下午
             </View>
           </View>
           <View className='time-manager-lock-bottom-hours'>
-            {currentDate.hours.map(item => {
+            {/*展示24个小时 方格*/}
+            {currentDay.hours.map(item => {
+              var classname = 'time-manager-lock-bottom-hours-item'
+              {!!screenList && screenList.map(screen => {
+                // 判断是否是选中的日期
+                {screen.weekday === currentDay.num ?
+                  // 判断是否是选中的小时
+                  screen.hours.map(hour => {
+                    // 如果是选中的小时 改变方格颜色
+                    {hour == item ? classname = 'time-manager-lock-bottom-hours-item--active':''}
+                  }):''
+                }
+              })}
               return (
                 <View
-                  className={classNames('time-manager-lock-bottom-hours-item', {'time-manager-lock-bottom-hours-item--active': item.isChecked})}
-                  onClick={this.onCheckedHours.bind(this, item)}
-                >
-                  {item.id}
-                </View>
+                  className={classname}
+                  onClick={this.onSelectHour.bind(this, item)}
+                > {item} </View>
               )
             })}
           </View>
         </View>
-        <View className='time-manager-lock-sure-button'>确定</View>
+        <View className='time-manager-lock-sure-button' onClick={this.onClickAddScreenSchedule}>确定</View>
       </View>
     )
   }
