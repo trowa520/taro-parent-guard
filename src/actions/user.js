@@ -6,7 +6,7 @@ import {
   USER_SOCIALITE_LOGIN
 } from '@constants/user'
 import {
-  API_USER,
+  API_USER_INFO,
   API_USER_LOGIN,
   API_USER_REGISTER,
   API_USER_SOCIALITE_LOGIN
@@ -18,7 +18,7 @@ import { createAction } from '@utils/redux'
  * @param {*} payload
  */
 export const dispatchUser = payload => createAction({
-  url: API_USER,
+  url: API_USER_INFO,
   fetchOptions: {
     showToast: false,
     autoLogin: false

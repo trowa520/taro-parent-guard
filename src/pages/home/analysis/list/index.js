@@ -1,21 +1,24 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import Taro, {Component} from '@tarojs/taro'
+import {View, Image} from '@tarojs/components'
 import deviceIcon from "@assets/device.png";
 import './index.scss'
 
-export default class AnalysisList extends Component{
+export default class AnalysisList extends Component {
   static defaultProps = {
     list: []
   }
   onClick = (item) => {
+    const {userInfo} = this.props
+    if (userInfo.isManager == 0) {
+      Taro.showToast({title: '对不起！您没有权限操作', icon: 'none'})
+      return
+    }
     let param = JSON.stringify(item)
-    Taro.navigateTo({
-      url: '/pages/app-manager/app-manager?item=' + encodeURIComponent(param)
-    })
+    Taro.navigateTo({url: '/pages/app-manager/app-manager?item=' + encodeURIComponent(param)})
   }
 
   render() {
-    const { list } = this.props
+    const {list} = this.props
     return (
       <View className='analysis-list'>
         {list.map(item => {

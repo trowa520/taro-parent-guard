@@ -1,9 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import Taro, {Component} from '@tarojs/taro'
+import {View} from '@tarojs/components'
 
 import './index.scss'
 
-export default class MyMap extends Component{
+export default class MyMap extends Component {
   constructor(props) {
     super(props)
 
@@ -31,15 +31,15 @@ export default class MyMap extends Component{
     //   AMap.event.addListener(geolocation, 'error', that.onError);      //返回定位出错信息
     // })
   }
+
   // onComplete = (geolocation) => {
   //   console.log(geolocation)
   // }
 
 
-
   componentWillReceiveProps(nextProps, nextContext) {
-    const { AMap } = window
-    const { lng, lat } = nextProps
+    const {AMap} = window
+    const {lng, lat} = nextProps
     var position = [lng, lat]
     var map = new AMap.Map('container', {
       resizeEnable: true,
@@ -49,11 +49,7 @@ export default class MyMap extends Component{
     new AMap.Marker({
       map: map,
       position: position,   // 经纬度
-      icon: new AMap.Icon({
-        size: new AMap.Size(40, 50),  //图标的大小
-        image: "https://webapi.amap.com/theme/v1.3/images/newpc/way_btn2.png",
-        imageOffset: new AMap.Pixel(0, -60)
-      })
+      icon: 'http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png'
     });
   }
 

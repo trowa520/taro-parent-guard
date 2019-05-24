@@ -3,6 +3,7 @@
   height: 260px;
   background: white;
   align-items: center;
+
   &-item {
     height: 200px;
     width: 25%;
@@ -13,6 +14,7 @@
     justify-content: space-around;
     border: 2px solid #dddddd;
     border-radius: 6px;
+
     &--active {
       background: #FDFBCD;
       border: 2px solid #fdcb02;
@@ -29,6 +31,7 @@
       align-items: baseline;
       font-size: 36px;
       color: #FC6D04;
+
       &-coin {
         font-size: 20px;
       }

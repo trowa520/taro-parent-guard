@@ -1,76 +1,77 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import Taro, {Component} from '@tarojs/taro'
+import {View} from '@tarojs/components'
 import {getWindowHeight} from "@utils/style";
+import {connect} from '@tarojs/redux'
+import * as actions from '@actions/statistics'
 import {AtTabs, AtTabsPane} from "taro-ui";
+import { getGlobalData } from "@utils/global_data";
 import List from './list'
 import './statistics.scss'
 
+@connect(state => state.statistics, {...actions})
 export default class Statistics extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       currentTabIndex: 0,
+      page: 1
     }
   }
 
   config = {
-    navigationBarTitleText: '报表'
+    navigationBarTitleText: '报表',
+    enablePullDownRefresh: true,
+    onReachBottomDistance: 50
   }
 
-  handleTabsClick ( value) {
-    console.log(value)
-    this.setState({
-      currentTabIndex: value
+  onPullDownRefresh() {
+    console.log("下拉加载")
+  }
+
+  onReachBottom() {
+    console.log("上拉事件")
+  }
+
+  componentDidShow() {
+    this.getKidApps("day")
+    this.props.dispatchGetUserInfo()
+  }
+
+  getKidApps(type) {
+    var that = this
+    Taro.getStorage({key: 'kidId'}).then(res => {
+      that.props.dispatchKidApps({kidId: res.data, page: 1, pageSize: 50, order: type})
     })
   }
-  render () {
-    const { currentTabIndex } = this.state
+
+  handleTabsClick(value) {
+    this.setState({currentTabIndex: value})
+    var type = "day"
+    switch (value) {
+      case 1:
+        type = "week"
+        break
+      case 2:
+        type = "month"
+        break
+      default:
+        type = "day"
+        break
+    }
+    this.getKidApps(type)
+  }
+
+  render() {
+    const {currentTabIndex} = this.state
     const tabs = [{title: '今日'}, {title: '本周'}, {title: '本月'}]
-    const dates = [
-      [{
-        id: 1,
-        name: '王者荣耀',
-        time: '5小时10分钟52秒',
-        icon: ''
-      }],
-      [{
-        id: 1,
-        name: '王者荣耀',
-        time: '5小时10分钟52秒',
-        icon: ''
-      },
-        {
-          id: 2,
-          name: '爱奇艺',
-          time: '4小时03分钟12秒',
-          icon: 'http://api.leerzhi.com.cn/images/default/female.png'
-        }],
-      [{
-        id: 1,
-        name: '王者荣耀',
-        time: '5小时10分钟52秒',
-        icon: ''
-      },
-        {
-          id: 2,
-          name: '爱奇艺',
-          time: '4小时03分钟12秒',
-          icon: 'http://api.leerzhi.com.cn/images/default/female.png'
-        },
-        {
-          id: 3,
-          name: '微信',
-          time: '2小时10分钟52秒',
-          icon: ''
-        }],
-    ]
+    const {apps, userInfo} = this.props
     return (
       <View className='statistics'>
-        <AtTabs scroll current={currentTabIndex} tabList={tabs} onClick={this.handleTabsClick.bind(this)} />
-        <AtTabsPane current={currentTabIndex} index={currentTabIndex} >
-          <View className='statistics-tab-content' style={{height:getWindowHeight()}}>
-            <List list={dates[currentTabIndex]} />
+        <AtTabs scroll current={currentTabIndex} tabList={tabs} onClick={this.handleTabsClick.bind(this)}/>
+        <AtTabsPane current={currentTabIndex} index={currentTabIndex}>
+          <View className='statistics-tab-content' style={{height: getWindowHeight()}}>
+            <List list={apps} currentTabIndex={currentTabIndex} userInfo={userInfo}/>
           </View>
         </AtTabsPane>
       </View>

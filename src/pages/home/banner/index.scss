@@ -5,7 +5,7 @@
  */
 .home-banner {
   margin: 0;
-  height: 340px;
+  height: 300px;
   background: #02ca73;
   overflow: hidden;
   position: relative;
@@ -14,14 +14,36 @@
   color: white;
 }
 
+.home-banner-add {
+  height: 300px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-item {
+    height: 80px;
+    width: 278px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: white;
+    border: 2px solid white;
+    border-radius: 43px;
+  }
+}
+
 .home-banner__swiper {
   // NOTE RN 的 Swiper 需要有高度，否则会报错
-  height: 290px;
+  height: 300px;
   margin: 0;
+
   &-item {
     margin: 0;
     display: flex;
     flex-direction: row;
+
     &-swiper-bg {
       width: 690px;
       height: 290px;
@@ -29,22 +51,26 @@
       flex-direction: row;
       justify-content: center;
     }
+
     &-detail {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
+
       &-avatar {
         width: 128px;
         height: 128px;
         display: flex;
         align-items: center;
+
         &-img {
           height: 128px;
           width: 128px;
           border-radius: 64px;
         }
       }
+
       &-info {
         width: 300px;
         height: 140px;
@@ -52,22 +78,25 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+
         &-os {
-          font-size:30px;
+          font-size: 30px;
           height: 100%;
           display: flex;
           align-items: center;
           color: #F5F5F5;
         }
+
         &-online {
-          font-size:20px;
+          font-size: 20px;
           height: 100%;
           display: flex;
           align-items: center;
           color: white;
         }
+
         &-app {
-          font-size:30px;
+          font-size: 30px;
           height: 100%;
           display: flex;
           align-items: center;
@@ -77,6 +106,7 @@
     }
   }
 }
+
 .children-img {
   position: absolute;
   right: 25px;

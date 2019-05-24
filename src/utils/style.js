@@ -10,7 +10,7 @@ const TAB_BAR_HEIGHT = 50
  */
 export function getWindowHeight(showTabBar = true) {
   const info = Taro.getSystemInfoSync()
-  const { windowHeight, statusBarHeight, titleBarHeight } = info
+  const {windowHeight, statusBarHeight, titleBarHeight} = info
   const tabBarHeight = showTabBar ? TAB_BAR_HEIGHT : 0
 
   if (process.env.TARO_ENV === 'rn') {
@@ -38,11 +38,11 @@ export function postcss(style) {
   if (!style) {
     return style
   }
-  const { background, ...restStyle } = style
+  const {background, ...restStyle} = style
   const newStyle = {}
   if (background) {
     // NOTE 如 RN 不支持 background，只支持 backgroundColor
     newStyle.backgroundColor = background
   }
-  return { ...restStyle, ...newStyle }
+  return {...restStyle, ...newStyle}
 }

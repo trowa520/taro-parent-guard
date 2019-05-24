@@ -1,6 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro, {Component} from '@tarojs/taro'
 import {View, Image, Button} from '@tarojs/components'
-import { getWindowHeight } from "@utils/style";
+import {getWindowHeight} from "@utils/style";
+import {connect} from "@tarojs/redux";
+import * as actions from "@actions/profile"
 import DefaultIcon from '@assets/default-avatar.png'
 import WeChatIcon from '@assets/wechat-pay.png'
 import SelectedIcon from '@assets/selected.png'
@@ -10,9 +12,8 @@ import jump from "@utils/jump";
 import Product from './product'
 import './vip.scss'
 
-
-
-export default class Vip extends Component{
+@connect(state => state.profile, {...actions})
+export default class Vip extends Component {
 
   config = {
     navigationBarTitleText: 'VIP会员'
@@ -20,44 +21,91 @@ export default class Vip extends Component{
 
   state = {
     platformIndex: 0,
-    platforms: [{name: '微信支付', icon: WeChatIcon},{name: '支付宝支付', icon: AliIcon}],
-    products  : [
-      {id: 1, title: '首充福利', price: 0.1, description: '享一周使用权'},
-      {id: 2, title: '连续包月', price: 5.9, description: '每月自动扣费可随时关闭'},
-      {id: 3, title: '连续包季', price: 10.9, description: '每月自动扣费可随时关闭'},
-      {id: 4, title: '包年', price: 49, description: '限时优惠即将恢复原价'},
-    ]
+    // {name: '支付宝支付', icon: AliIcon}
+    platforms: [{name: '微信支付', icon: WeChatIcon}],
+    productIndex: 0,
+  }
+
+  componentDidMount() {
+    this.props.dispatchGetUserInfo()
+    this.props.dispatchGetProducts()
   }
 
   onChoosePlatform = (item, index) => {
-    console.log(item)
-    this.setState({
-      platformIndex: index
-    })
+    this.setState({platformIndex: index})
   }
 
-  onPay = () =>{
-    jump({
-      url: '/pages/pay-response/pay-response?payResult=1'
-    })
+  onChooseProduct = (item, index) => {
+    this.setState({productIndex: index})
+  }
+
+  onPay = () => {
+    var that = this
+    const {productIndex} = this.state
+    const {products} = this.props
+    let product = products[productIndex]
+    if (process.env.TARO_ENV === 'h5') {    // 公众号支付
+      Taro.getStorage({key: 'openId'}).then(res => {
+        that.props.dispatchMPCreateOrder({price: product.price, openId: res.data, productId: product.id}).then(re => {
+          let param = re.data
+          WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+              "appId": param.appId,
+              "timeStamp": param.timeStamp,
+              "nonceStr": param.nonceStr,
+              "package": param.packageValue,
+              "signType": "MD5",
+              "paySign": param.paySign
+            },
+            function(r){
+              if(r.err_msg === "get_brand_wcpay_request:ok" ){
+                jump({url: '/pages/pay-response/pay-response?payResult=1'})
+              } else {
+                jump({url: '/pages/pay-response/pay-response?payResult=0'})
+              }
+            });
+        })
+      })
+    } else {   // 小程序支付
+      Taro.getStorage({key: 'openId'}).then(res => {
+        that.props.dispatchMACreateOrder({price: product.price, openId: res.data, productId: product.id}).then(re => {
+          let param = re.data
+          wx.requestPayment({
+              "appId": param.appId,
+              "timeStamp": param.timeStamp,
+              "nonceStr": param.nonceStr,
+              "package": param.packageValue,
+              "signType": "MD5",
+              "paySign": param.paySign,
+              success: function (r) {
+                jump({url: '/pages/pay-response/pay-response?payResult=1'})
+              },
+              fail: function (e) {
+                jump({url: '/pages/pay-response/pay-response?payResult=0'})
+              }
+            });
+          })
+      })
+    }
   }
 
   render() {
-    const { platformIndex, platforms } = this.state
+    const {platformIndex, platforms} = this.state
+    const {userInfo} = this.props
     return (
-      <View className='vip' style={{ height: getWindowHeight(false) }}>
+      <View className='vip' style={{height: getWindowHeight(false)}}>
         <View className='vip-line-view'>
         </View>
         <View className='vip-user-info'>
-          <Image className='vip-user-info-icon' src={DefaultIcon} />
-          <View className='vip-user-info-name'>刘飞扬家长</View>
-          <View className='vip-user-info-expire'>VIP将于121天后到期</View>
+          <Image className='vip-user-info-icon' src={!!userInfo && userInfo.avatar || DefaultIcon} />
+          <View className='vip-user-info-name'>{!!userInfo && userInfo.nickname}</View>
+          <View className='vip-user-info-expire'>{!!userInfo && userInfo.vipStatus == 1 ? 'vip将于' + userInfo.endAt.split('T')[0] + '到期': ''}</View>
         </View>
         <View className='vip-product'>
-          <Product products={this.state.products} />
+          <Product products={this.props.products} onChooseProduct={this.onChooseProduct.bind(this)} />
         </View>
         <View className='vip-platform'>
-          {platforms.map((item, index) => {
+          {!!platforms && platforms.map((item, index) => {
             return (
               <View className='vip-platform-wechat' onClick={this.onChoosePlatform.bind(this, item, index)}>
                 <Image className='vip-platform-wechat-icon' src={item.icon} />

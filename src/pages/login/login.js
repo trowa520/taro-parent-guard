@@ -1,10 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Input, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import Taro, {Component} from '@tarojs/taro'
+import {View, Input, Button} from '@tarojs/components'
+import {connect} from '@tarojs/redux'
 import * as actions from '@actions/user'
 import './login.scss'
 
-@connect(state => state.user, { ...actions})
+@connect(state => state.user, {...actions})
 export default class Login extends Component {
 
   config = {
@@ -17,63 +17,48 @@ export default class Login extends Component {
     password: ''
   }
 
-
   login = () => {
-    const { mobile, password } = this.state
-    if (mobile === '' ) {
-      Taro.showToast({
-        title: '请填写手机号',
-        icon: 'none'
-      })
-      return
-    }
-    if (password === '' ) {
-      Taro.showToast({
-        title: '请输入密码',
-        icon: 'none'
-      })
+    const {mobile, password} = this.state
+    if (!(/^1[23456789]\d{9}$/.test(mobile))) {
+      Taro.showToast({title: '请输入正确的手机号', icon: 'none'})
       return;
     }
-
+    if (password === '') {
+      Taro.showToast({title: '请输入密码', icon: 'none'})
+      return;
+    }
     this.props.dispatchLogin({mobile: mobile, password: password}).then((res) => {
       if (res.status === "success") {
-        Taro.switchTab({
-          url: '/pages/home/home'
-        })
+        Taro.switchTab({url: '/pages/home/home'})
       } else {
-        Taro.showToast({
-          title: res.data.errorMessage,
-          icon: 'none'
-        })
+        Taro.showToast({title: res.data.errorMessage, icon: 'none'})
       }
     })
   }
 
-  onHandleMobileInput =(e) => {
-    this.setState({
-      mobile: e.detail.value
-    })
+  onHandleMobileInput = (e) => {
+    this.setState({mobile: e.detail.value})
   }
-  onHandlePasswordInput =(e) => {
-    this.setState({
-      password: e.detail.value
-    })
+  onHandlePasswordInput = (e) => {
+    this.setState({password: e.detail.value})
   }
 
-  render () {
+  render() {
     return (
       <View className='app'>
         <View className='top-bg-view'>
           <View className='hello-view'>您好！</View>
-          <View className='welcome-view'>欢迎登录家长守护</View>
+          <View className='welcome-view'>欢迎登录家长护航</View>
         </View>
         <View className='form-view'>
           <View className='name-password-bg'>
             <View className='name-view'>
-              <Input className='mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号' value={this.state.mobile}/>
+              <Input className='mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'
+                     value={this.state.mobile}/>
             </View>
             <View className='password-view'>
-              <Input className='password-input' type='text' onChange={this.onHandlePasswordInput} placeholder='请输入密码' value={this.state.password}/>
+              <Input className='password-input' type='password' onChange={this.onHandlePasswordInput} placeholder='请输入密码'
+                     value={this.state.password}/>
             </View>
           </View>
           <View className='button-bg-view'>

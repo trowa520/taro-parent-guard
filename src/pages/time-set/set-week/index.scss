@@ -1,3 +1,7 @@
+.at-modal__container {
+  position: absolute;
+  top: 45%;
+}
 .set-week {
   &-title {
     display: flex;
@@ -8,9 +12,7 @@
     font-size: 30px;
     color: #333333;
     height: 80px;
-
   }
-
   &-item {
     display: flex;
     align-items: center;
@@ -21,15 +23,12 @@
     height: 82px;
     border: 0 solid #f0f0f0;
     border-bottom-width: 2px;
-
     &-yes {
       margin-right: 30px;
       height: 35px;
       width: 35px;
     }
-
   }
-
   &-button {
     display: flex;
     &-cancel {
@@ -43,7 +42,6 @@
       border: 0 solid #f0f0f0;
       border-right-width: 1px;
     }
-
     &-sure {
       width: 100%;
       display: flex;
@@ -54,9 +52,4 @@
       height: 80px;
     }
   }
-
-}
-.at-modal__container {
-  position: absolute;
-  top: 40%;
 }

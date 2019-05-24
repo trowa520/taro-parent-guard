@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Map } from '@tarojs/components'
-import { getWindowHeight } from '@utils/style'
-import rightIcon from '@assets/right.png'
-import { connect } from '@tarojs/redux'
+import Taro, {Component} from '@tarojs/taro'
+import {View, Image, ScrollView, Map} from '@tarojs/components'
+import {getWindowHeight} from '@utils/style'
+import {connect} from '@tarojs/redux'
 import * as actions from '@actions/home'
-import { dispatchSocialiteLogin } from '@actions/user'
+import {dispatchSocialiteLogin} from '@actions/user'
+import {setGlobalData, getGlobalData} from '@utils/global_data'
+import rightIcon from '@assets/right.png'
 import Banner from './banner'
 import Menu from './menu'
 import Lock from './lock'
@@ -12,72 +13,84 @@ import Analysis from './analysis'
 import AMap from './map'
 import './home.scss'
 
-@connect(state => state.home, { ...actions, dispatchSocialiteLogin })
+@connect(state => state.home, {...actions, dispatchSocialiteLogin})
 export default class Home extends Component {
 
   config = {
-    navigationBarTitleText: '守护'
+    navigationBarTitleText: '首页'
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      kids: [],
-      apps: [],
-      lng: 116.397428,
-      lat: 39.90923,
-    }
+  state = {
+    isLock: false
   }
 
   // 判断用户登录状态
   componentDidMount() {
     var that = this
+    if (getGlobalData('bannerIndex') === undefined) {
+      setGlobalData('bannerIndex', 0)
+    }
     Taro.getStorage({key: 'token'}).then(res => {
       if (res.data === '') {
         that.isNeedToLogin()
       }
-      that.getKidsInfo();
+      that.getKidsInfo()
     }).catch(() => {
       that.isNeedToLogin()
     })
   }
+
+  componentDidShow() {
+    this.props.dispatchGetUserInfo()
+    if (getGlobalData('bannerIndex') > 0) {
+      this.getKidsInfo()
+    }
+  }
+
   // 切换当前孩子
   onChangeKidIndex = (index) => {
-    var that = this
-    const { kids } = that.state
-    that.getKidCurrentLocation(kids[index]['id'])
-    that.getKidApps(kids[index]['id'])
+    setGlobalData('bannerIndex', index)
+    const {kids} = this.props
+    if (index < kids.length) {
+      this.getKidsInfo()
+    }
   }
+
   // 获取所有孩子相关信息
   getKidsInfo() {
     var that = this
-    that.props.dispatchKids().then(re => {
-      if (re.data.length > 0) {
-        that.setState({ kids: re.data })
-        that.getKidCurrentLocation(re.data[0]['id'])
-        that.getKidApps(re.data[0]['id'])
+    this.props.dispatchKids().then(res => {
+      if (res.data.length > 0) {
+        let index = getGlobalData('bannerIndex')
+        let kidId = res.data[index]['id']
+
+        setGlobalData('kid', res.data[index])
+        setGlobalData('kids', res.data)
+        setGlobalData('kidId', kidId)
+        setGlobalData('isLock', res.data[index].isLock)
+
+        Taro.setStorage({key: "kidId", data: kidId})
+        Taro.setStorage({key: "kid", data: res.data[index]})
+        Taro.setStorage({key: "kids", data: res.data})
+        that.setState({isLock: res.data[index].isLock})
+
+        that.props.dispatchKidApps({kidId: kidId, page: 1, pageSize: 3, order: "day"})
+        that.props.dispatchKidCurrentLocation({kidId: kidId})
+      } else {
+        setGlobalData('kid', '')
+        setGlobalData('kids', '')
+        setGlobalData('kidId', '')
+        Taro.setStorage({key: "kidId", data: ''})
+        Taro.setStorage({key: "kid", data: ''})
+        Taro.setStorage({key: "kids", data: ''})
       }
     })
   }
-  getKidApps(kidId) {
-    var that = this
-    that.props.dispatchKidApps({kidId: kidId, page: 1, pageSize: 2, order: "day"}).then(res =>{
-      that.setState({ apps: res.data.list })
-    })
-  }
-  // 获取孩子定位信息
-  getKidCurrentLocation(kidId) {
-    var that = this
-    Taro.setStorage({ key: "kidId", data: kidId })
-    that.props.dispatchKidCurrentLocation({kidId: kidId}).then(res => {
-      that.setState({ lng: res.data.lng,  lat: res.data.lat })
-    })
-  }
+
   // 判断是否需要登录
   isNeedToLogin() {
     var that = this
-    // 判断是否需要获取openId
-    Taro.getStorage({key: 'openId'}).then(res => {
+    Taro.getStorage({key: 'openId'}).then(res => {     // 判断是否需要获取openId
       if (res.data === '') {
         that.getCode()
       } else {
@@ -87,21 +100,20 @@ export default class Home extends Component {
       that.getCode()
     })
   }
+
   // 获取code
   getCode() {
     var that = this
+    Taro.showLoading()
     if (process.env.TARO_ENV === 'weapp') {
-      Taro.showLoading()
       Taro.login().then(res => {
-        let code = res.code
-        that.code2Session(code)
+        that.code2Session(res.code)
       })
     } else if (process.env.TARO_ENV === 'h5') {
-      Taro.showLoading()
-      let code = Home.getParamsFormUrl("code")
-      that.code2Session(code)
+      that.code2Session(Home.getParamsFormUrl("code"))
     }
   }
+
   // 利用code 获取 openId
   code2Session(code) {
     var that = this
@@ -109,20 +121,32 @@ export default class Home extends Component {
       that.props.dispatchMACodeToOpenId({code: code}).then(res => {
         that.socialiteLogin(res.data.openid)
       })
-    } else if (process.env.TARO_ENV === 'h5'){
+    } else if (process.env.TARO_ENV === 'h5') {
       that.props.dispatchMPCodeToOpenId({code: code}).then(res => {
         that.socialiteLogin(res.data.openId)
       })
     }
   }
+
   // 第三方登陆
   socialiteLogin(openId) {
     var that = this
-    let data = { openId: openId, provider: process.env.TARO_ENV }
+    let data = {openId: openId, provider: process.env.TARO_ENV}
     that.props.dispatchSocialiteLogin(data).then(() => {
       Taro.hideLoading()
       that.getKidsInfo()
+    }).catch(()=> {
+      Taro.hideLoading()
     })
+  }
+
+  onClickLocation = () => {
+    const {kids} = this.props
+    if(kids.length < 1) {
+      Taro.showToast({title: '未获取到孩子信息!', icon: 'none'})
+      return
+    }
+    Taro.navigateTo({url: '/pages/location/location'})
   }
   // 获取url路径参数
   static getParamsFormUrl(name) {
@@ -132,43 +156,30 @@ export default class Home extends Component {
     return '';
   }
 
-  onTap = () => {
-    console.log('获取定位信息')
+  onChangeLockStatus = (isLock) => {
+    this.setState({isLock: isLock})
   }
 
-  render () {
-    // if (!this.state.loaded) {
-    //   return <Loading />
-    // }
-    const {lng, lat, apps } = this.state
-    const markers = [{
-      latitude: lat,
-      longitude: lng,
-      width: 25,
-      height: 25
-    }]
+  render() {
+    const {lng, lat, apps, updateAt, kids, userInfo} = this.props
+    const {isLock} = this.state
+    const markers = [{latitude: lat, longitude: lng, width: 25, height: 25}]
     return (
       <View className='home'>
-        <ScrollView
-          scrollY
-          className='home__wrap'
-          // onScrollToLower={this.loadRecommend}
-          style={{ height: getWindowHeight() }}
-
-        >
-          <Banner list={this.state.kids} onChangeSwipper={this.onChangeKidIndex.bind(this)}/>
-          <Menu />
-          <Lock />
-          <Analysis list={apps} />
+        <ScrollView scrollY className='home__wrap' style={{height: getWindowHeight()}}>
+          <Banner list={kids} onChangeSwipper={this.onChangeKidIndex.bind(this)}/>
+          <Menu onChangeLockStatus={this.onChangeLockStatus.bind(this)}/>
+          <Lock isLock={isLock}/>
+          <Analysis list={apps} userInfo={userInfo}/>
           <View className='map'>
-            <View className='map-top'>
+            <View className='map-top' onClick={this.onClickLocation.bind(this)}>
               <View className='map-top-text'>设备位置</View>
-              <View className='map-top-des'>位置更新时间 03-13 18:06</View>
-              <Image className='map-top-img' src={rightIcon} />
+              <View className='map-top-des'>位置更新时间 {updateAt}</View>
+              <Image className='map-top-img' src={rightIcon}/>
             </View>
             <View style='padding: 10px;'>
-              <Map id='container' markers={markers} latitude={lat} longitude={lng} />
-              <AMap lng={lng} lat={lat} />
+              <Map hidden={process.env.TARO_ENV === 'h5'} id='container' markers={markers} latitude={lat} longitude={lng}/>
+              <AMap lng={lng} lat={lat}/>
             </View>
           </View>
         </ScrollView>

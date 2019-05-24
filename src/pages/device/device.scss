@@ -1,8 +1,12 @@
+@import "~taro-ui/dist/style/components/image-picker.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
 .device {
   background: #f1f1f1;
+
   &-info {
     margin-top: 15px;
   }
+
   &-token {
     margin-top: 15px;
     background: white;
@@ -17,6 +21,7 @@
   border-bottom-width: 2px;
   align-items: center;
   justify-content: space-between;
+
   &-title {
     display: flex;
     align-items: center;
@@ -26,12 +31,14 @@
     height: 100%;
     margin-left: 30px;
   }
+
   &-img {
     height: 80px;
     width: 80px;
     margin-right: 80px;
   }
 }
+
 .view-input {
   display: flex;
   background: white;
@@ -40,6 +47,7 @@
   border-bottom-width: 2px;
 
   &-title {
+    flex: 1;
     display: flex;
     align-items: center;
     font-size: 28px;
@@ -50,15 +58,18 @@
   }
 
   &-content {
+    flex: 2;
     color: #999999;
     font-size: 28px;
     height: 100%;
-    width: 300px;
+    width: 400px;
     display: flex;
     align-items: center;
   }
 
   &-picker {
+    flex: 2;
+    width: 400px;
     color: #999999;
     font-size: 28px;
     height: 100%;
@@ -67,7 +78,9 @@
     align-items: center;
   }
 }
+
 .save-button {
+  visibility: visible;
   display: flex;
   color: white;
   background: #02ca73;
@@ -79,8 +92,32 @@
   margin: 0 auto;
   margin-top: 20px;
   font-size: 30px;
-
 }
+.save-button-hidden {
+  visibility: hidden;
+}
+
+.unbind-button {
+  visibility: visible;
+  display: flex;
+  color: red;
+  background: #f1f1f1;
+  border: 2px solid red;
+  height: 80px;
+  width: 690px;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+
+.unbind-button-hidden {
+  visibility: hidden;
+}
+
 // 输入框 占位符 字体颜色
 input::-webkit-input-placeholder {
   color: #999999;

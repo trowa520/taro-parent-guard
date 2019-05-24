@@ -19,6 +19,7 @@
       width: 200px;
       color: #333333;
     }
+
     // 锁屏时间设置
     &-des {
       flex: 2;
@@ -29,6 +30,7 @@
       justify-content: flex-end;
       margin-right: 20px
     }
+
     // 箭头
     &-img {
       margin-right: 30px;
@@ -58,10 +60,12 @@
       flex-direction: column;
       justify-content: center;
       margin-left: 30px;
+
       &-app {
         font-size: 30px;
         color: #444444;
       }
+
       &-time {
         font-size: 24px;
         color: #999999;

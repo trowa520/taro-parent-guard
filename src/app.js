@@ -1,6 +1,6 @@
 import '@tarojs/async-await'
-import Taro, { Component } from '@tarojs/taro'
-import { Provider } from '@tarojs/redux'
+import Taro, {Component} from '@tarojs/taro'
+import {Provider} from '@tarojs/redux'
 import 'taro-ui/dist/style/index.scss'
 
 import Home from './pages/home/home'
@@ -30,10 +30,17 @@ class App extends Component {
       'pages/time-set/time-set',
       'pages/app/app',
       'pages/vip/vip',
+      'pages/location/location',
+      'pages/trace/trace',
       'pages/device/device',
-      'pages/pay-response/pay-response',
       'pages/add-parent/add-parent',
+      'pages/add-kid/add-kid',
+      'pages/add-kid-step/add-kid-step',
       'pages/app-manager/app-manager',
+      'pages/app-download/app-download',
+      'pages/switch-kid/switch-kid',
+      'pages/lock-reason/lock-reason',
+      'pages/pay-response/pay-response',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -56,17 +63,19 @@ class App extends Component {
         iconPath: "./assets/tab-bar/statistics.png",
         selectedIconPath: "./assets/tab-bar/statistics-active.png",
         text: "报表"
-      }, {
-        pagePath: "pages/discover/discover",
-        iconPath: "./assets/tab-bar/discover.png",
-        selectedIconPath: "./assets/tab-bar/discover-active.png",
-        text: "发现"
-      }, {
-        pagePath: "pages/profile/profile",
-        iconPath: "./assets/tab-bar/profile.png",
-        selectedIconPath: "./assets/tab-bar/profile-active.png",
-        text: "我"
-      }]
+      },
+        //   {
+        //   pagePath: "pages/discover/discover",
+        //   iconPath: "./assets/tab-bar/discover.png",
+        //   selectedIconPath: "./assets/tab-bar/discover-active.png",
+        //   text: "发现"
+        // },
+        {
+          pagePath: "pages/profile/profile",
+          iconPath: "./assets/tab-bar/profile.png",
+          selectedIconPath: "./assets/tab-bar/profile-active.png",
+          text: "我"
+        }]
     }
   }
 

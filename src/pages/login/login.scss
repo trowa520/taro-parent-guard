@@ -3,6 +3,7 @@
   height: 100%;
   width: 100%;
 }
+
 .top-bg-view {
   background: #02ca73;
   height: 546px;
@@ -12,6 +13,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 // 发送验证码样式
 .code-view {
   margin-left: 30px;
@@ -23,6 +25,7 @@
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 .hello-view {
   margin-top: 40px;
   margin-left: 40px;
@@ -30,12 +33,14 @@
   font-size: 70px;
   color: white;
 }
+
 .welcome-view {
   margin-left: 40px;
   margin-bottom: 60px;
   color: white;
   font-size: 32px;
 }
+
 .form-view {
   position: absolute;
   top: 380px;
@@ -44,6 +49,7 @@
   display: flex;
   flex-direction: column;
 }
+
 .name-password-bg {
   height: 300px;
   background: white;
@@ -54,6 +60,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 26px #888888;
 }
+
 .name-view {
   width: 100%;
   height: 100%;
@@ -61,6 +68,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .password-view {
   width: 100%;
   height: 100%;
@@ -68,9 +76,11 @@
   align-items: center;
   justify-content: center;
 }
+
 input::-webkit-input-placeholder {
   color: rgb(230, 230, 230);
 }
+
 .mobile-input {
   width: 100%;
   height: 100px;
@@ -82,6 +92,7 @@ input::-webkit-input-placeholder {
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 .password-input {
   width: 100%;
   height: 100px;
@@ -93,6 +104,7 @@ input::-webkit-input-placeholder {
   border: 2px solid rgb(230, 230, 230);
   border-radius: 10px;
 }
+
 .button-bg-view {
   width: 100%;
   margin-top: 40px;
@@ -100,6 +112,7 @@ input::-webkit-input-placeholder {
   align-items: center;
   justify-content: center;
 }
+
 .login-button {
   width: 100%;
   height: 94px;

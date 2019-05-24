@@ -12,26 +12,20 @@ const CODE_AUTH_EXPIRED = 10002   // 登录过期
 const USER_NO_EXIST = 20001       // 用户不存在
 
 function getStorage(key) {
-  return Taro.getStorage({ key }).then(res => res.data).catch(() => '')
+  return Taro.getStorage({key}).then(res => res.data).catch(() => '')
 }
 
 function updateStorage(res = {}) {
-  // return Promise.all([
-    Taro.setStorage({ key: 'token', data: res.data['token'] || '' }),
-    Taro.setStorage({ key: 'userInfo', data: res.data['user'] || ''})
-  // ])
+  Taro.setStorage({key: 'token', data: res.data['token'] || ''})
+  Taro.setStorage({key: 'userInfo', data: res.data['user'] || ''})
 }
 
 function updateMaOpenId(res = {}) {
-  // return Promise.all([
-    Taro.setStorage({ key: 'openId', data: res.data['openid'] || '' })
-  // ])
+  Taro.setStorage({key: 'openId', data: res.data['openid'] || ''})
 }
 
 function updateMpOpenId(res = {}) {
-  // return Promise.all([
-    Taro.setStorage({ key: 'openId', data: res.data['openId'] || '' })
-  // ])
+  Taro.setStorage({key: 'openId', data: res.data['openId'] || ''})
 }
 
 /**
@@ -40,26 +34,23 @@ function updateMpOpenId(res = {}) {
  * @param {*} options
  */
 export default async function fetch(options) {
-  const { url, payload, method = 'GET', Auth = false } = options
+  const {url, payload, method = 'GET', auth = false, json = false} = options
   const token = await getStorage('token')
-  if (Auth && token === '') {
+  if (auth && token === '') {
     if (process.env.TARO_ENV === 'weapp') {
-      Taro.reLaunch({
-        url: '/pages/login/login'
-      })
+      Taro.reLaunch({url: '/pages/login/login'})
     } else {
-      Taro.navigateTo({
-        url: '/pages/login/login'
-      })
+      Taro.navigateTo({url: '/pages/login/login'})
     }
   }
-  var header = token ? { 'Authorization': 'Bearer ' + token } : {}
+  var header = token ? {'Authorization': 'Bearer ' + token} : {}
 
-  if (method === 'POST') {
+  if (method === 'POST' && json === false) {
     header['content-type'] = 'application/x-www-form-urlencoded'
   } else {
-    header['content-type'] = 'application/json'
+    header['content-type'] = 'application/json;charset=UTF-8'
   }
+  
   return Taro.request({
     url,
     method,
@@ -70,20 +61,24 @@ export default async function fetch(options) {
       if (res.data.status === CODE_AUTH_EXPIRED) {
         await updateStorage({})
       }
-      if(res.data.data.errorCode === USER_NO_EXIST) {
-        if (process.env.TARO_ENV === 'weapp') {
-          Taro.reLaunch({
-            url: '/pages/register/register'
-          })
+      if (url === API_USER_LOGIN || url === API_USER_SOCIALITE_LOGIN) {
+        if (res.data.data.errorCode === USER_NO_EXIST) {
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({url: '/pages/register/register'})
+          } else {
+            Taro.navigateTo({url: '/pages/register/register'})
+          }
         } else {
-          Taro.navigateTo({
-            url: '/pages/register/register'
-          })
+          if (process.env.TARO_ENV === 'weapp') {
+            Taro.reLaunch({url: '/pages/login/login'})
+          } else {
+            Taro.navigateTo({url: '/pages/login/login'})
+          }
         }
       }
     }
     // 更新用户信息
-    if ( url === API_USER_LOGIN || url === API_USER_REGISTER || url === API_USER_SOCIALITE_LOGIN ) {
+    if (url === API_USER_LOGIN || url === API_USER_REGISTER || url === API_USER_SOCIALITE_LOGIN) {
       await updateStorage(res.data)
     }
     // 更新openId
@@ -95,24 +90,6 @@ export default async function fetch(options) {
     }
     return res.data
   }).catch((err) => {
-    Taro.showToast({
-      title: '服务器故障',
-      icon: 'none',
-      success: function () {
-        // setTimeout(function () {
-        //   //要延时执行的代码
-        //   if (process.env.TARO_ENV === 'weapp') {
-        //     Taro.reLaunch({
-        //       url: '/pages/login/login'
-        //     })
-        //   } else {
-        //     Taro.navigateTo({
-        //       url: '/pages/login/login'
-        //     })
-        //   }
-        // }, 2000) //延迟时间
-      }
-    })
     return {message: err.data.errorMessage, ...err}
   })
 }

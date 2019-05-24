@@ -1,10 +1,10 @@
 const isH5 = process.env.CLIENT_ENV === 'h5'
 
 // 本机域名
-const HOST = '"http://127.0.0.1:8090"'
+const HOST = '"http://parent.leerzhi.com.cn/api"'
 
 // 接口域名
-const HOST_API = '"http://guard.z.leerzhi.cn:8091"'
+const HOST_API = '"http://pg.leerzhi.cn/api"'
 
 module.exports = {
   env: {

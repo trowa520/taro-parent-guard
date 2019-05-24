@@ -3,6 +3,7 @@
   height: 100%;
   width: 100%;
 }
+
 .top-bg-view {
   background: #02ca73;
   height: 546px;
@@ -12,6 +13,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
 .hello-view {
   margin-top: 40px;
   margin-left: 40px;
@@ -19,12 +21,14 @@
   font-size: 70px;
   color: white;
 }
+
 .welcome-view {
   margin-left: 40px;
   margin-bottom: 60px;
   color: white;
   font-size: 32px;
 }
+
 .form-view {
   position: absolute;
   top: 380px;
@@ -33,6 +37,7 @@
   display: flex;
   flex-direction: column;
 }
+
 //
 .register-name-password-bg {
   height: 420px;
@@ -43,10 +48,12 @@
   border-radius: 10px;
   box-shadow: 2px 2px 26px #888888;
 }
+
 // 输入框 占位符 字体颜色
 input::-webkit-input-placeholder {
   color: rgb(230, 230, 230);
 }
+
 // 输入框背景样式
 .input-view {
   margin-top: 30px;
@@ -56,6 +63,7 @@ input::-webkit-input-placeholder {
   align-items: center;
   justify-content: center;
 }
+
 // 发送验证码样式
 .code-view {
   margin-top: 30px;
@@ -67,6 +75,7 @@ input::-webkit-input-placeholder {
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 手机号输入框样式
 .mobile-input {
   width: 100%;
@@ -76,6 +85,7 @@ input::-webkit-input-placeholder {
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 验证码输入框样式
 .code-input {
   height: 100px;
@@ -83,6 +93,7 @@ input::-webkit-input-placeholder {
   margin-right: 30px;
   font-size: 30px;
 }
+
 // 发送验证码按钮样式
 .send-code-button {
   font-size: 30px;
@@ -90,6 +101,7 @@ input::-webkit-input-placeholder {
   background: none;
   border: none;
 }
+
 // 密码输入框样式
 .password-input {
   width: 100%;
@@ -99,14 +111,17 @@ input::-webkit-input-placeholder {
   border: 2px solid rgb(230, 230, 230);
   border-radius: 5px;
 }
+
 // 登录按钮背景样式
 .button-bg-view {
   margin-top: 40px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 // 登录按钮样式
 .login-button {
   width: 100%;
@@ -118,4 +133,10 @@ input::-webkit-input-placeholder {
   font-size: 34px;
 }
 
+.goto-login {
+  font-size: 26px;
+  color: #02ca73;
+  margin-top: 60px;
+
+}
 

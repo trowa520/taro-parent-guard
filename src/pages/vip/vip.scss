@@ -7,11 +7,12 @@
     background: #f1f1f1;
   }
 
-  &-user-info{
+  &-user-info {
     background: white;
     height: 120px;
     display: flex;
     align-items: center;
+
     &-icon {
       padding-left: 25px;
       height: 80px;
@@ -40,48 +41,55 @@
 
   &-platform {
     margin-top: 20px;
-    height: 210px;
     background: white;
+
     &-wechat {
       height: 105px;
       border: 0 solid #f0f0f0;
       border-bottom-width: 2px;
       display: flex;
       align-items: center;
+
       &-icon {
         margin-left: 20px;
         height: 60px;
         width: 60px;
       }
+
       &-name {
         flex: 3;
         margin-left: 25px;
         font-size: 30px;
         color: #333333;
       }
+
       &-right {
         margin-right: 25px;
         height: 40px;
         width: 40px;
       }
     }
+
     &-ali {
       height: 105px;
       border: 0 solid #f0f0f0;
       border-bottom-width: 2px;
       display: flex;
       align-items: center;
+
       &-icon {
         margin-left: 20px;
         height: 60px;
         width: 60px;
       }
+
       &-name {
         flex: 3;
         margin-left: 25px;
         font-size: 30px;
         color: #333333;
       }
+
       &-right {
         margin-right: 25px;
         height: 40px;
