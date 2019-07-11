@@ -1,0 +1,36 @@
+.income-record {
+  background: #f1f1f1;
+
+  &-list {
+    background: white;
+
+    &-item {
+      height: 120px;
+      border: 0 solid #f0f0f0;
+      border-bottom-width: 2px;
+      display: flex;
+      align-items: center;
+      margin: 0 30px;
+
+      &-icon {
+        height: 78px;
+        width: 78px;
+        border-radius: 50%;
+      }
+
+      &-detail {
+        width: 600px;
+        margin-left: 30px;
+        font-size: 26px;
+        display: flex;
+        flex-wrap: wrap;
+
+        &-date {
+          width: 250px;
+          font-size: 24px;
+          color: #999999;
+        }
+      }
+    }
+  }
+}

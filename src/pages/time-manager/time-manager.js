@@ -107,9 +107,9 @@ export default class Index extends Component {
       let param = JSON.stringify({kidId: res.data, type: 'screen', expr: expr, appId: this.state.appId})
       that.props.dispatchAddSchedule(param).then(re => {
         if (re.status === 'success') {
-          Taro.showToast({title: '添加成功！', icon: 'none'})
+          Taro.showToast({title: '设置成功！', icon: 'none'})
         } else {
-          Taro.showToast({title: '添加失败！', icon: 'none'})
+          Taro.showToast({title: '设置失败！', icon: 'none'})
         }
       })
     })
@@ -191,11 +191,8 @@ export default class Index extends Component {
                 <View className='time-length-list'>
                   <View className='time-length-list-item'>
                     <View className='time-length-list-item-cycle'>
-                      <Picker style='width:490px;' mode='time' className='time-length-list-item-date'
-                              onChange={this.onChangeDuration}>
-                        <View className='time-length-list-item-date'>
-                          不超过{this.secondToDate(duration)}
-                        </View>
+                      <Picker style='width:490px;' mode='time' className='time-length-list-item-date' onChange={this.onChangeDuration}>
+                        <View className='time-length-list-item-date'>不超过{this.secondToDate(duration)}</View>
                       </Picker>
                     </View>
                     <Image className='time-length-list-item-img' src={rightIcon}/>

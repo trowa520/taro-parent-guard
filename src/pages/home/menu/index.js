@@ -14,6 +14,10 @@ import './index.scss'
 @connect(state => state.home, {...actions})
 export default class Menu extends Component {
 
+  static defaultProps = {
+    list: []
+  }
+
   handleClick = (item) => {
     const {userInfo} = this.props
     Taro.getStorage({key: "kidId"}).then(res => {
@@ -25,6 +29,12 @@ export default class Menu extends Component {
             Taro.showToast({title: '对不起！您没有权限操作', icon: 'none'})
             return
           }
+        }
+        if (item.id == 3) {
+          if (process.env.TARO_ENV === 'weapp') {
+            jump({url: '/pages/location-ma/location-ma'})
+            return
+          } 
         }
         jump({url: item.url, title: item.text})
       }
@@ -62,8 +72,14 @@ export default class Menu extends Component {
   }
 
   render() {
+    const list1 = [
+      // {id:4, icon: appIcon, text: '护眼服务', url: '/pages/app/app'},
+      // {id:5, icon: timeIcon, text: '安全服务', url: '/pages/time-manager/time-manager'},
+      // {id:6, icon: locationIcon, text: '位置服务', url: '/pages/location/location'},
+      // {id:7, icon: locationIcon, text: '孩子服务', url: '/pages/location/location'}
+      ]
     const list = [
-      {id:1, icon: appIcon, text: '健康应用', url: '/pages/app/app'},
+      {id:1, icon: appIcon, text: '应用管理', url: '/pages/app/app'},
       {id:2, icon: timeIcon, text: '时间设置', url: '/pages/time-manager/time-manager'},
       {id:3, icon: locationIcon, text: '孩子位置', url: '/pages/location/location'}]
     var isLock = ''
@@ -73,19 +89,31 @@ export default class Menu extends Component {
       isLock = getGlobalData('isLock') !== undefined ? getGlobalData('isLock') : false
     }
     return (
-      <View className='operation-view'>
-        <View className='operation-view-item' onClick={this.onClickLock.bind(this, isLock)}>
-          <Image className='operation-view-item-img' src={isLock ? unlockIcon : lockIcon} />
-          <Text className='operation-view-item-txt'>{isLock ? '一键解锁' : '一键锁屏'}</Text>
+      <View>
+        <View className='operation-view'>
+          {!!list1 && list1.map((item) => {
+            return (
+              <View className='operation-view-item' onClick={this.handleClick.bind(this, item)}>
+                <Image className='operation-view-item-img' src={item.icon} />
+                <Text className='operation-view-item-txt'>{item.text}</Text>
+              </View>
+            )
+          })}
         </View>
-        {list.map((item) => {
-          return (
-            <View className='operation-view-item' onClick={this.handleClick.bind(this, item)}>
-              <Image className='operation-view-item-img' src={item.icon} />
-              <Text className='operation-view-item-txt'>{item.text}</Text>
-            </View>
-          )
-        })}
+        <View className='operation-view'>
+          <View className='operation-view-item' onClick={this.onClickLock.bind(this, isLock)}>
+            <Image className='operation-view-item-img' src={isLock ? unlockIcon : lockIcon} />
+            <Text className='operation-view-item-txt'>{isLock ? '一键解锁' : '一键锁屏'}</Text>
+          </View>
+          {!!list && list.map((item) => {
+            return (
+              <View className='operation-view-item' onClick={this.handleClick.bind(this, item)}>
+                <Image className='operation-view-item-img' src={item.icon} />
+                <Text className='operation-view-item-txt'>{item.text}</Text>
+              </View>
+            )
+          })}
+        </View>
       </View>
     )
   }

@@ -3,53 +3,55 @@ import {View, Image} from '@tarojs/components'
 import YesIcon from '@assets/yes.png'
 import {connect} from "@tarojs/redux";
 import * as actions from '@actions/time_manager'
+import classNames from 'classnames'
 import './index.scss'
 
 @connect(state => state.time_manager, {...actions})
 export default class setWeek extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      weekDays : this.props.selectDays
-    }
+  static defaultProps = {
+    weekDays: []
   }
+
   // 点击取消按钮
   onClickCancel() {
     this.props.onClose()
   }
   // 点击确定按钮
   onClickSure() {
-    this.props.onClickSure(this.state.weekDays)
+    this.props.onClickSure()
   }
   // 选择时间段
-  selectDay = (e) => {
-    var newDays = []
-    if(this.state.weekDays.indexOf(e.id) > -1) {
-      newDays = this.state.weekDays.filter(item => item != e.id)
-      this.setState({weekDays: newDays})
+  selectDay = (day) => {
+    const {weekDays} = this.props
+    var newDays = weekDays
+    if(weekDays.indexOf(day.id) > -1) {
+      newDays = weekDays.filter(item => item != day.id)
     } else {
-      newDays = this.state.weekDays.concat(e.id).sort()
-      this.setState({weekDays: newDays})
+      newDays = weekDays.concat(day.id).sort()
     }
+    this.props.onChangeWeekDay(newDays)
   }
 
   render() {
-    const days = [{id: 1, name: '周一'},{id: 2, name: '周二'},{id: 3, name: '周三'},
-      {id: 4, name: '周四'},{id: 5, name: '周五'},{id: 6, name: '周六'},{id: 0, name: '周日'}]
-    const { weekDays } = this.state
+    let days = [
+      {id: 0, name: '周日'},
+      {id: 1, name: '周一'},
+      {id: 2, name: '周二'},
+      {id: 3, name: '周三'},
+      {id: 4, name: '周四'},
+      {id: 5, name: '周五'},
+      {id: 6, name: '周六'}
+    ]
+    const { weekDays } = this.props
     return (
       <View className='set-week'>
         <View className='set-week-title'>选择时段</View>
-        {days.map(item => {
+        {days.map(day => {
           return (
-            <View className='set-week-item' onClick={this.selectDay.bind(this, item)}>
-              每{item.name}
-              {!!weekDays && weekDays.map(temp => {
-                if (item.id == temp) {
-                  return (<Image className='set-week-item-yes' src={YesIcon} />)
-                }
-              })}
+            <View className='set-week-item' onClick={this.selectDay.bind(this, day)}>
+              每{day.name}
+              {weekDays.indexOf(day.id) > -1 ? <Image className='set-week-item-yes' src={YesIcon} /> : ''}
             </View>
           )
         })}

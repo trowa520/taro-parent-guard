@@ -1,0 +1,135 @@
+.recommend {
+  background: #f1f1f1;
+
+  &-card {
+    height: 450px;
+    width: 100%;
+    background: linear-gradient(to right, rgb(17, 184, 135), rgb(27, 211, 97));
+    color: white;
+
+    &-top {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+
+      &-title {
+        font-size: 24px;
+      }
+
+      &-detail {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+
+        &-money {
+          font-size: 58px;
+        }
+
+        &-unit {
+          margin-left: 5px;
+          font-size: 28px;
+        }
+      }
+    }
+
+    &-bottom {
+      height: 150px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.1);
+
+      &-detail {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 0 solid #1bd361;
+        align-items: center;
+
+        &-title {
+          font-size: 22px;
+        }
+
+        &-number {
+          font-size: 36px;
+        }
+      }
+    }
+  }
+
+  &-share {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-top: 20px;
+
+    &-title {
+      font-size: 32px;
+      color: #333333;
+      margin-left: 30px;
+      margin-top: 30px;
+    }
+
+    &-detail {
+      display: flex;
+      margin: 30px 0;
+      justify-content: space-around;
+
+      &-share {
+        height: 110px;
+        width: 340px;
+      }
+
+      &-cash {
+        height: 110px;
+        width: 340px;
+      }
+    }
+  }
+
+  &-list {
+    margin-top: 20px;
+    background: white;
+
+    &-item {
+      height: 92px;
+      display: flex;;
+      align-items: center;
+      border: 0 solid #f0f0f0;
+      border-bottom-width: 2px;
+
+      &--last {
+        border-bottom-width: 0;
+      }
+
+      &-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 25px;
+        height: 40px;
+        width: 40px;
+      }
+
+      &-title {
+        flex: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 28px;
+        color: #333333;
+        margin-left: 30px;
+      }
+
+      &-img {
+        height: 25px;
+        width: 15px;
+        align-self: center;
+        padding-right: 25px;
+      }
+    }
+  }
+}

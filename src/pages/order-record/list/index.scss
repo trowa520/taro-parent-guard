@@ -1,0 +1,35 @@
+.order-record-list {
+  &-card {
+    background: white;
+    margin: 5px 15px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+    height: 120px;
+    align-items: center;
+
+    &-left {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+
+      &-title {
+        font-size: 30px;
+        color: #666666;
+      }
+
+      &-desc {
+        font-size: 28px;
+        color: #999999;
+      }
+    }
+
+    &-right {
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 28px;
+      color: #02ca73;
+    }
+  }
+}

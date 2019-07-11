@@ -26,7 +26,21 @@ export default class Profile extends Component {
   }
 
   onClickVip = () => {
+    const {userInfo} = this.props
+    if (userInfo.isManager == 0) {
+      Taro.showToast({title: '对不起！您不是主管理员', icon: 'none'})
+      return
+    }
     jump({url: '/pages/vip/vip'})
+  }
+
+  onClickOrderRecords = () => {
+    const {userInfo} = this.props
+    if (userInfo.isManager == 0) {
+      Taro.showToast({title: '对不起！您不是主管理员', icon: 'none'})
+      return
+    }
+    jump({url: '/pages/order-record/order-record'})
   }
 
   logout = () => {
@@ -39,12 +53,21 @@ export default class Profile extends Component {
     }
   }
 
+  onClickDeviceManager = () => {
+    const {kids} = this.props
+    if (kids.length > 0) {
+      jump({url: '/pages/device/device'})
+    } else {
+      Taro.showToast({title: '请先添加设备！', icon: 'none'})
+    }
+  }
+
   render() {
     const list = [
       {id: 0, icon: AddDeviceIcon, title: '添加设备', url: '/pages/add-kid/add-kid'},
       {id: 1, icon: AddParentIcon, title: '管理员', url: '/pages/add-parent/add-parent'},
-      {id: 2, icon: StudentDocIcon, title: '设备信息', url: '/pages/device/device'},
-      {id: 3, icon: InviteIcon, title: '推荐有礼', url: '/pages/home/home'}]
+      {id: 2, icon: StudentDocIcon, title: '设备管理', url: '/pages/device/device'},
+      {id: 3, icon: InviteIcon, title: '分享赚钱', url: '/pages/recommend/recommend'}]
     const {userInfo, kids} = this.props
     return (
       <View className='profile' style={{height: getWindowHeight()}}>
@@ -54,13 +77,13 @@ export default class Profile extends Component {
           {/*<Image className='profile-info-message' src={MessageIcon}/>*/}
           <View className='profile-info-devices'>
             <View className='profile-info-devices-top'>
-              <View className='profile-info-devices-top-count'>{kids.length}</View>
+              <View className='profile-info-devices-top-count' onClick={this.onClickDeviceManager.bind(this)}>{kids.length}</View>
               <View className='profile-info-devices-top-unit'>个</View>
             </View>
             <View className='profile-info-devices-vip'>已绑定设备(使用中)</View>
             <View className='profile-info-devices-buttons'>
               <View className='profile-info-devices-buttons-open' onClick={this.onClickVip}>开通VIP</View>
-              <View className='profile-info-devices-buttons-record'>消费明细</View>
+              <View className='profile-info-devices-buttons-record' onClick={this.onClickOrderRecords.bind(this)}>消费明细</View>
             </View>
           </View>
         </View>

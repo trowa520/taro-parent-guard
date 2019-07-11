@@ -21,7 +21,7 @@ export default class AnalysisList extends Component {
     const {list} = this.props
     return (
       <View className='analysis-list'>
-        {list.map(item => {
+        {!!list && list.map(item => {
           return (
             <View className='analysis-list-item'>
               <View className='analysis-list-item-cycle'>

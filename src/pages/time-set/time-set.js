@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Button, Image, Picker} from '@tarojs/components'
+import {View, Button, Image, Picker, Text} from '@tarojs/components'
 import {AtModal} from "taro-ui";
 import {connect} from "@tarojs/redux";
 import * as actions from '@actions/time_manager'
@@ -14,16 +14,14 @@ export default class TimeSet extends Component {
   config = {
     navigationBarTitleText: '时段配置'
   }
-  constructor(props) {
-    super(props)
-    this.state = {
-      appId: 0,
-      begin_at: '请选择开始时间',
-      end_at: '请选择结束时间',
-      weekDays: [],
-      editIndex: undefined,
-      isOpened: false
-    }
+
+  state = {
+    appId: 0,
+    begin_at: '请选择开始时间',
+    end_at: '请选择结束时间',
+    weekDays: [],
+    editIndex: undefined,
+    isOpened: false
   }
 
   componentDidShow() {
@@ -55,8 +53,7 @@ export default class TimeSet extends Component {
     this.setState({isOpened: !isOpened})
   }
   // 设置周几弹窗
-  onClickSetWeekSure(weekDays) {
-    this.setState({weekDays: weekDays,})
+  onClickSetWeekSure() {
     this.onClose()
   }
   // 设置开始时间
@@ -70,7 +67,6 @@ export default class TimeSet extends Component {
   onClickAddSchedule = () => {
     var that = this
     const {weekDays, begin_at, end_at, editIndex, appId} = this.state
-    console.log(appId)
     if (weekDays.length < 1) {
       Taro.showToast({title: '请选择时间段', icon: 'none'})
       return
@@ -83,7 +79,6 @@ export default class TimeSet extends Component {
       Taro.showToast({title: '请选择结束时间', icon:'none'})
       return
     }
-    console.log(editIndex)
     if (editIndex === undefined) {
       Taro.getStorage({key: 'kidId'}).then(res => {
         let expr =  {weekdays: weekDays, begin_at: begin_at, end_at: end_at}
@@ -117,8 +112,8 @@ export default class TimeSet extends Component {
     var that = this
     const {editIndex, appId} = this.state
     Taro.getStorage({key: 'kidId'}).then(res => {
-      let param  = JSON.stringify({editIndex: editIndex, kidId: res.data, type: 'app', handleType: 'delete', expr: {}, appId: appId})
-      that.props.dispatchUpdateSchedule(param).then(re => {
+      let param  = JSON.stringify({editIndex: editIndex, kidId: res.data, type: 'app', expr: {}, appId: appId})
+      that.props.dispatchDeleteSchedule(param).then(re => {
         if(re.status === 'success') {
           Taro.showToast({title: '删除成功！', icon: 'none'})
         } else {
@@ -128,32 +123,33 @@ export default class TimeSet extends Component {
       })
     })
   }
+
+  onChangeWeekDay = (weekDays) => {
+    this.setState({weekDays: weekDays})
+  }
   render() {
     const {begin_at, end_at, weekDays, isOpened, editIndex} = this.state
-    const height = getWindowHeight(false)
+    let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
     return (
-      <View className='time-bg' style={{height}}>
-        <View className='line-view'>
-        </View>
+      <View className='time-bg' style={{height: getWindowHeight(false)}}>
+        <View className='line-view'> </View>
         <AtModal isOpened={isOpened} onClose={this.onClose.bind(this)}>
-          <SetWeek selectDays={weekDays} onClose={this.onClose.bind(this)} onClickSure={this.onClickSetWeekSure.bind(this)}/>
+          <SetWeek
+            weekDays={weekDays}
+            onClose={this.onClose.bind(this)}
+            onClickSure={this.onClickSetWeekSure.bind(this)}
+            onChangeWeekDay={this.onChangeWeekDay.bind(this)}
+          />
         </AtModal>
         <View className='time-set'>
           <View className='time-set-card'>
             <View className='time-set-card-text'>重复</View>
             <View className='time-set-card-des' onClick={this.onShowSetWeek.bind(this)}>
               <View className='time-set-card-des'>
-              {weekDays.length > 0 ? weekDays.map((item) => {
-                return (
-                  item == 1 ? '周一 ' :
-                    item == 2 ? '周二 ' :
-                      item == 3 ? '周三 ' :
-                        item == 4 ? '周四 ' :
-                          item == 5 ? '周五 ' :
-                            item == 6 ? '周六 ' :
-                              item == 0 ? '周日 ' : ''
-                )
-              }) : '请选择时段'}
+              {weekDays.length > 0 ?
+                weekDays.map(ite => {
+                  return (<Text>{days[ite]}</Text>)
+                }) : '请选择时段'}
               </View>
             </View>
             <Image className='time-set-card-img' src={rightIcon} />
@@ -161,18 +157,14 @@ export default class TimeSet extends Component {
           <View className='time-set-card'>
             <View className='time-set-card-text'>开始时间</View>
             <Picker mode='time' className='time-set-card-des' onChange={this.onChangeBeginAt}>
-              <View className='time-set-card-des'>
-              {begin_at}
-              </View>
+              <View className='time-set-card-des'>{begin_at}</View>
             </Picker>
             <Image className='time-set-card-img' src={rightIcon} />
           </View>
           <View className='time-set-card'>
             <View className='time-set-card-text'>结束时间</View>
             <Picker mode='time' className='time-set-card-des' onChange={this.onChangeEndAt}>
-              <View className='time-set-card-des'>
-              {end_at}
-              </View>
+              <View className='time-set-card-des'>{end_at}</View>
             </Picker>
             <Image className='time-set-card-img' src={rightIcon} />
           </View>
@@ -185,4 +177,3 @@ export default class TimeSet extends Component {
     )
   }
 }
-

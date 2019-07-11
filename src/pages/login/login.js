@@ -45,19 +45,19 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View className='app'>
-        <View className='top-bg-view'>
-          <View className='hello-view'>您好！</View>
-          <View className='welcome-view'>欢迎登录家长护航</View>
+      <View className='login'>
+        <View className='login-top'>
+          <View className='login-top-hello'>您好！</View>
+          <View className='login-top-welcome'>欢迎登录家长护航</View>
         </View>
-        <View className='form-view'>
-          <View className='name-password-bg'>
-            <View className='name-view'>
-              <Input className='mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'
+        <View className='login-form'>
+          <View className='login-form-mobile-password'>
+            <View className='login-form-mobile'>
+              <Input className='login-form-mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'
                      value={this.state.mobile}/>
             </View>
-            <View className='password-view'>
-              <Input className='password-input' type='password' onChange={this.onHandlePasswordInput} placeholder='请输入密码'
+            <View className='login-form-password'>
+              <Input className='login-form-password-input' type='password' onChange={this.onHandlePasswordInput} placeholder='请输入密码'
                      value={this.state.password}/>
             </View>
           </View>

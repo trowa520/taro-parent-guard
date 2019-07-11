@@ -12,8 +12,8 @@ export const CDN = 'https://yanxuan.nosdn.127.net'
 export const API_USER_LOGIN = `${host}/user/login`                        // 登录
 export const API_USER_SOCIALITE_LOGIN = `${host}/user/social-login`       // 第三方登录
 export const API_USER_REGISTER = `${host}/user/register`                  // 注册
-export const API_MA_CODE_TO_SESSION=`${host}/wx/ma/code2Session`          // 小程序 code -> openId
-export const API_MP_CODE_TO_SESSION=`${host}/wx/mp/code2Session`          // 公众号 code -> openId
+export const API_MA_CODE_TO_SESSION = `${host}/wx/ma/code2Session`          // 小程序 code -> openId
+export const API_MP_CODE_TO_SESSION = `${host}/wx/mp/code2Session`          // 公众号 code -> openId
 export const API_SMS_CODE = `${host}/user/getotp`                         // 获取短信验证码
 export const API_USER_INFO = `${host}/user/info`                          // 用户信息
 export const API_MANAGERS = `${host}/user/managers`                       // 管理员列表
@@ -37,6 +37,12 @@ export const API_WX_MA_UNIFIED_ORDER = `${host}/wx/ma-pay/unifiedOrder`   // 统
 export const API_WX_MP_UNIFIED_ORDER = `${host}/wx/mp-pay/unifiedOrder`   // 统一下单
 export const API_WX_MA_CREATE_ORDER = `${host}/wx/ma-pay/createOrder`     // 创建订单
 export const API_WX_MP_CREATE_ORDER = `${host}/wx/mp-pay/createOrder`     // 创建订单
+export const API_GET_PRODUCTS = `${host}/product/list`                    // 获取产品
+export const API_GET_ORDERS = `${host}/order/list`                        // 获取订单列表
+export const API_GET_POSTER = `${host}/wx/mp/poster`                      // 获取海报
+export const API_GET_RECOMMEND_USERS = `${host}/user/recommend-users`     // 获取推荐的人员列表
+export const API_GET_USER_ACCOUNTS = `${host}/userAccount/list`           // 获取消费记录
+export const API_WITHDRAW = `${host}/withdraw/apply`                      // 申请提现
 
 // command
 export const API_ADD_COMMAND = `${host}/command/add`                      // 创建命令
@@ -47,7 +53,4 @@ export const API_GET_APP_SCHEDULE = `${host}/schedule/show`                // �
 export const API_GET_SCREEN_SCHEDULE = `${host}/schedule/show`             // 获取任务
 export const API_ADD_SCHEDULE = `${host}/schedule/add`                     // 创建任务
 export const API_UPDATE_SCHEDULE = `${host}/schedule/update`               // 编辑任务
-
-export const API_GET_PRODUCTS = `${host}/product/list`                     // 获取产品
-
-
+export const API_DELETE_SCHEDULE = `${host}/schedule/delete`               // 删除任务

@@ -73,7 +73,7 @@ export default class App extends Component {
   getApps(status = 0, name = '') {
     var that = this
     Taro.getStorage({key: 'kidId'}).then(res => {
-      that.props.dispatchKidApps({kidId: res.data, status: status, name: name, pageSize:50})
+      that.props.dispatchKidApps({kidId: res.data, status: status, name: name, pageSize:200})
     })
   }
 
@@ -134,5 +134,4 @@ export default class App extends Component {
       </View>
     )
   }
-
 }

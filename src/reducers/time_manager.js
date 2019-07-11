@@ -2,7 +2,9 @@ import {
   GET_SCHEDULE,
   GET_APP_SCHEDULE,
   GET_SCREEN_SCHEDULE,
-  ADD_SCHEDULE
+  ADD_SCHEDULE,
+  UPDATE_SCHEDULE,
+  DELETE_SCHEDULE
 } from '@constants/time_manager';
 
 const INITIAL_STATE = {
@@ -38,6 +40,16 @@ export default function time_manager(state = INITIAL_STATE, action) {
       }
     }
     case ADD_SCHEDULE: {
+      return {
+        ...state
+      }
+    }
+    case UPDATE_SCHEDULE: {
+      return {
+        ...state
+      }
+    }
+    case DELETE_SCHEDULE: {
       return {
         ...state
       }

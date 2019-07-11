@@ -1,25 +1,29 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Input, Picker} from "@tarojs/components"
-import {AtTabs, AtTabsPane} from "taro-ui"
+import {View, Input, Picker, Image} from "@tarojs/components"
+import {AtTabs, AtTabsPane, AtImagePicker} from "taro-ui"
 import {getWindowHeight} from "@utils/style"
 import {connect} from "@tarojs/redux"
 import * as actions from "@actions/profile"
-import DefaultAvatar from '@assets/default-avatar.png'
+import DefaultAvatar from '@assets/default.png'
 import classNames from 'classnames'
 import './device.scss'
 
 @connect(state => state.profile, {...actions})
 export default class Device extends Component {
 
-  state = {
-    currentTabIndex: 0,
-    gender: ['男', '女'],
-    relation: ['父子', '母子', '父女', '母女', '爷孙'],
-    period: ['幼儿园', '小学', '初中', '高中'],
-    currentKid: {},
-    kids: [],
-    tabs: [],
+  constructor () {
+    super(...arguments)
+    this.state = {
+      currentTabIndex: 0,
+      gender: ['男', '女'],
+      relation: ['父子', '母子', '父女', '母女', '爷孙'],
+      period: ['幼儿园', '小学', '初中', '高中'],
+      currentKid: {},
+      kids: [],
+      tabs: []
+    }
   }
+
   componentDidShow() {
     var that = this
     const {currentTabIndex} = this.state
@@ -53,17 +57,19 @@ export default class Device extends Component {
   onBirthdayChange = (e) => {
     var {kids, currentTabIndex} = this.state
     var date = e.detail.value
-    var year = date.split('-')[0]
-    var month = date.split('-')[1]
-    if (month < 10) {
-      month = '0' + month
+    if (process.env.TARO_ENV === 'h5') {
+      var year = date.split('-')[0]
+      var month = date.split('-')[1]
+      if (month < 10) {
+        month = '0' + month
+      }
+      var day = date.split('-')[2]
+      if (day < 10) {
+        day = '0' + day
+      }
+      date = year + '-' + month + '-' + day
     }
-    var day = date.split('-')[2]
-    if (day < 10) {
-      day = '0' + day
-    }
-    var newDate = year + '-' + month + '-' + day
-    let kid = Object.assign({}, this.state.currentKid, {birthday: newDate})
+    let kid = Object.assign({}, this.state.currentKid, {birthday: date})
     kids[currentTabIndex] = kid
     this.setState({currentKid: kid, kids: kids})
   }
@@ -122,6 +128,9 @@ export default class Device extends Component {
     Taro.navigateBack()
   }
 
+  onClickChoseImage = () => {
+    Taro.showToast({title: '暂不支持修改头像', icon: 'none'})
+  }
   render() {
     const {currentTabIndex, currentKid, tabs} = this.state
     const {userInfo} = this.props
@@ -130,10 +139,10 @@ export default class Device extends Component {
         <AtTabs scroll current={currentTabIndex} tabList={tabs} onClick={this.handleTabsClick.bind(this, 'currentTabIndex')} />
         <AtTabsPane current={currentTabIndex} index={currentTabIndex}>
           <View className='device-info' style={{height: getWindowHeight()}}>
-            {/*<View className='view-avatar'>*/}
-              {/*<View className='view-avatar-title'>设置头像</View>*/}
-              {/*<AtImagePicker className='view-avatar-img' files={this.state.files} showAddBtn={true}/>*/}
-            {/*</View>*/}
+            <View className='view-avatar'>
+              <View className='view-avatar-title'>孩子头像</View>
+              <Image className='view-avatar-img' src={!!currentKid && currentKid.avatarUrl || DefaultAvatar} onClick={this.onClickChoseImage.bind(this)}/>
+            </View>
             <View className='view-input'>
               <View className='view-input-title'>孩子昵称</View>
               <Input

@@ -29,6 +29,7 @@ export default class Vip extends Component {
   componentDidMount() {
     this.props.dispatchGetUserInfo()
     this.props.dispatchGetProducts()
+    this.props.dispatchUserAccounts({processType: 20001})
   }
 
   onChoosePlatform = (item, index) => {
@@ -42,11 +43,16 @@ export default class Vip extends Component {
   onPay = () => {
     var that = this
     const {productIndex} = this.state
-    const {products} = this.props
+    const {products, userAccounts} = this.props
     let product = products[productIndex]
+    var percent = 1
+    if(userAccounts.length < 1) {
+      percent = 0.6
+    }
+    var price = (product.price * percent).toFixed(2)
     if (process.env.TARO_ENV === 'h5') {    // 公众号支付
       Taro.getStorage({key: 'openId'}).then(res => {
-        that.props.dispatchMPCreateOrder({price: product.price, openId: res.data, productId: product.id}).then(re => {
+        that.props.dispatchMPCreateOrder({price: price, openId: res.data, productId: product.id}).then(re => {
           let param = re.data
           WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
@@ -68,7 +74,7 @@ export default class Vip extends Component {
       })
     } else {   // 小程序支付
       Taro.getStorage({key: 'openId'}).then(res => {
-        that.props.dispatchMACreateOrder({price: product.price, openId: res.data, productId: product.id}).then(re => {
+        that.props.dispatchMACreateOrder({price: price, openId: res.data, productId: product.id}).then(re => {
           let param = re.data
           wx.requestPayment({
               "appId": param.appId,
@@ -91,7 +97,7 @@ export default class Vip extends Component {
 
   render() {
     const {platformIndex, platforms} = this.state
-    const {userInfo} = this.props
+    const {userInfo, userAccounts} = this.props
     return (
       <View className='vip' style={{height: getWindowHeight(false)}}>
         <View className='vip-line-view'>
@@ -99,10 +105,10 @@ export default class Vip extends Component {
         <View className='vip-user-info'>
           <Image className='vip-user-info-icon' src={!!userInfo && userInfo.avatar || DefaultIcon} />
           <View className='vip-user-info-name'>{!!userInfo && userInfo.nickname}</View>
-          <View className='vip-user-info-expire'>{!!userInfo && userInfo.vipStatus == 1 ? 'vip将于' + userInfo.endAt.split('T')[0] + '到期': ''}</View>
+          <View className='vip-user-info-expire'>{!!userInfo && userInfo.vipStatus == 1 ? 'vip将于' + userInfo.endAt.split(' ')[0] + '到期': ''}</View>
         </View>
         <View className='vip-product'>
-          <Product products={this.props.products} onChooseProduct={this.onChooseProduct.bind(this)} />
+          <Product products={this.props.products} isFirstPay={userAccounts.length > 0 ? 0 : 1} onChooseProduct={this.onChooseProduct.bind(this)} />
         </View>
         <View className='vip-platform'>
           {!!platforms && platforms.map((item, index) => {
