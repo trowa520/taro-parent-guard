@@ -11,6 +11,10 @@ import './index.scss'
 @connect(state => state.home, {...actions})
 export default class SwiperBanner extends Component {
 
+  static defaultProps = {
+    list: []
+  }
+
   onChangeSwipper = (e) => {
     this.props.onChangeSwipper(e.detail.current)
   }
@@ -53,7 +57,7 @@ export default class SwiperBanner extends Component {
     return (
       <View className='home-banner'>
         <Image className='children-img' onClick={this.onClickSwitchKid} src={childrenIcon} />
-        {list.length > 0
+        {!!list && list.length > 0
           ?
           (<Swiper
             className='home-banner__swiper'
@@ -63,7 +67,7 @@ export default class SwiperBanner extends Component {
             current={getGlobalData('bannerIndex')}
             onChange={this.onChangeSwipper.bind(this)}
           >
-            {list.map(item => (
+            {!!list && list.map(item => (
               <SwiperItem key={item.id} className='home-banner__swiper-item'>
                 <View className='home-banner__swiper-item-swiper-bg'>
                   <View className='home-banner__swiper-item-detail'>

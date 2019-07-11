@@ -1,13 +1,13 @@
 .products {
   display: flex;
-  height: 260px;
+  height: 240px;
   background: white;
   align-items: center;
 
   &-item {
     height: 200px;
     width: 25%;
-    margin: 0 10px;
+    margin: 0 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,10 +26,22 @@
       color: #333333;
     }
 
+    &-original-price {
+      display: flex;
+      align-items: baseline;
+      font-size: 20px;
+      color: #999999;
+      text-decoration: line-through;
+
+      &-coin {
+        font-size: 15px;
+      }
+    }
+
     &-price {
       display: flex;
       align-items: baseline;
-      font-size: 36px;
+      font-size: 33px;
       color: #FC6D04;
 
       &-coin {
@@ -44,7 +56,7 @@
       height: 50px;
       display: flex;
       padding: 0 5px;
-      padding-bottom: 10px;
+      //padding-bottom: 5px;
       align-items: center;
     }
   }

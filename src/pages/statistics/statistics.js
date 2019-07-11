@@ -41,7 +41,7 @@ export default class Statistics extends Component {
   getKidApps(type) {
     var that = this
     Taro.getStorage({key: 'kidId'}).then(res => {
-      that.props.dispatchKidApps({kidId: res.data, page: 1, pageSize: 50, order: type})
+      that.props.dispatchKidApps({kidId: res.data, page: 1, pageSize: 200, order: type})
     })
   }
 

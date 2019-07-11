@@ -24,8 +24,7 @@ export default class Home extends Component {
     isLock: false
   }
 
-  // 判断用户登录状态
-  componentDidMount() {
+  componentDidShow() {
     var that = this
     if (getGlobalData('bannerIndex') === undefined) {
       setGlobalData('bannerIndex', 0)
@@ -38,10 +37,11 @@ export default class Home extends Component {
     }).catch(() => {
       that.isNeedToLogin()
     })
-  }
-
-  componentDidShow() {
-    this.props.dispatchGetUserInfo()
+    this.props.dispatchGetUserInfo().then(res => {
+      if (res.data.mobile === '') {
+        Taro.navigateTo({url: '/pages/register/register'})
+      }
+    })
     if (getGlobalData('bannerIndex') > 0) {
       this.getKidsInfo()
     }
@@ -108,6 +108,9 @@ export default class Home extends Component {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.login().then(res => {
         that.code2Session(res.code)
+      }).catch(errCode => {
+        Taro.hideLoading()
+        Taro.showToast({title: '获取code失败！', icon: 'none'})
       })
     } else if (process.env.TARO_ENV === 'h5') {
       that.code2Session(Home.getParamsFormUrl("code"))
@@ -120,10 +123,16 @@ export default class Home extends Component {
     if (process.env.TARO_ENV === 'weapp') {
       that.props.dispatchMACodeToOpenId({code: code}).then(res => {
         that.socialiteLogin(res.data.openid)
+      }).catch(err => {
+        Taro.hideLoading()
+        Taro.showToast({title: 'weapp获取opendId失败', icon: 'none'})
       })
     } else if (process.env.TARO_ENV === 'h5') {
       that.props.dispatchMPCodeToOpenId({code: code}).then(res => {
         that.socialiteLogin(res.data.openId)
+      }).catch(err => {
+        Taro.hideLoading()
+        Taro.showToast({title: 'h5获取opendId失败', icon: 'none'})
       })
     }
   }
@@ -132,11 +141,16 @@ export default class Home extends Component {
   socialiteLogin(openId) {
     var that = this
     let data = {openId: openId, provider: process.env.TARO_ENV}
-    that.props.dispatchSocialiteLogin(data).then(() => {
+    that.props.dispatchSocialiteLogin(data).then((res) => {
       Taro.hideLoading()
+      if (res.data.user.mobile === '') {
+        Taro.navigateTo({url: '/pages/register/register'})
+        return
+      }
       that.getKidsInfo()
     }).catch(()=> {
       Taro.hideLoading()
+      Taro.showToast({title: '登录失败！', icon: 'none'})
     })
   }
 
@@ -146,7 +160,11 @@ export default class Home extends Component {
       Taro.showToast({title: '未获取到孩子信息!', icon: 'none'})
       return
     }
-    Taro.navigateTo({url: '/pages/location/location'})
+    if (process.env.TARO_ENV === 'weapp') {
+      Taro.navigateTo({url: '/pages/location-ma/location-ma'})
+    } else {
+      Taro.navigateTo({url: '/pages/location/location'})
+    }
   }
   // 获取url路径参数
   static getParamsFormUrl(name) {
@@ -178,8 +196,8 @@ export default class Home extends Component {
               <Image className='map-top-img' src={rightIcon}/>
             </View>
             <View style='padding: 10px;'>
-              <Map hidden={process.env.TARO_ENV === 'h5'} id='container' markers={markers} latitude={lat} longitude={lng}/>
-              <AMap lng={lng} lat={lat}/>
+              {process.env.TARO_ENV === 'h5' ?
+                <AMap lng={lng} lat={lat}/> : <Map id='container' markers={markers} latitude={lat} longitude={lng}/>}
             </View>
           </View>
         </ScrollView>

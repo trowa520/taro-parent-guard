@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {View, Image} from '@tarojs/components'
+import {View, Image, Text} from '@tarojs/components'
 import rightIcon from '@assets/right.png'
 import {connect} from "@tarojs/redux";
 import * as actions from "@actions/time_manager"
@@ -19,26 +19,17 @@ export default class List extends Component {
 
   render() {
     const {list} = this.props
+    let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
     return (
       <View className='list'>
-        {list.map((item, index) => {
+        {!!list && list.map((item, index) => {
           return (
             <View className='list-item' onClick={this.navToTimeSet.bind(this, item, index)}>
               <View className='list-item-cycle'>
-                <View className='list-item-time'>
-                  {item.begin_at}-{item.end_at}
-                </View>
+                <View className='list-item-time'>{item.begin_at}-{item.end_at}</View>
                 <View className='list-item-date'>
-                  {item.weekdays.map((item) => {
-                    return (
-                      item == 1 ? '周一 ' :
-                        item == 2 ? '周二 ' :
-                          item == 3 ? '周三 ':
-                            item == 4 ? '周四 ' :
-                              item == 5 ? '周五 ' :
-                                item == 6 ? '周六 ' :
-                                  item == 0 ? '周日 ' : ''
-                    )
+                  {!!item.weekdays && item.weekdays.map((it) => {
+                    return (<Text>{days[it]}</Text>)
                   })}
                 </View>
               </View>

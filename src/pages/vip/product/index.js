@@ -19,7 +19,11 @@ export default class Product extends Component {
 
   render() {
     const {current} = this.state
-    const {products} = this.props
+    const {products, isFirstPay} = this.props
+    var percent = 1
+    if(isFirstPay) {
+      percent = 0.6
+    }
     return (
       <View className='products'>
         {products.map((item, index) => {
@@ -28,8 +32,14 @@ export default class Product extends Component {
               <View className='products-item-title'>
                 {item.name}
               </View>
+              {percent !== 1 ?
+                <View className='products-item-original-price'>
+                  <View className='products-item-original-price-coin'>￥</View>{(item.originalPrice).toFixed(2)}
+                </View>
+                : ''
+              }
               <View className='products-item-price'>
-                <View className='products-item-price-coin'>￥</View>{item.price}
+                <View className='products-item-price-coin'>￥</View>{(item.price * percent).toFixed(2)}
               </View>
               <View className='products-item-description'>
                 {item.description}

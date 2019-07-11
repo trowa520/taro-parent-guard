@@ -40,7 +40,6 @@ export default class Register extends Component {
       return;
     }
     Taro.getStorage({key: 'openId'}).then(res => {
-      console.log("openId -> " + JSON.stringify(res.data))
       that.props.dispatchRegister({
         mobile: mobile,
         password: password,
@@ -119,23 +118,23 @@ export default class Register extends Component {
 
   render() {
     return (
-      <View className='app'>
-        <View className='top-bg-view'>
-          <View className='hello-view'>您好！</View>
-          <View className='welcome-view'>欢迎注册家长护航</View>
+      <View className='register'>
+        <View className='register-top'>
+          <View className='register-top-hello'>您好！</View>
+          <View className='register-top-welcome'>欢迎注册家长护航</View>
         </View>
-        <View className='form-view'>
-          <View className='register-name-password-bg'>
-            <View className='input-view'>
-              <Input className='mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'/>
+        <View className='register-form'>
+          <View className='register-form-mobile-password'>
+            <View className='register-form-mobile'>
+              <Input className='register-form-mobile-input' type='text' onChange={this.onHandleMobileInput} placeholder='请输入手机号'/>
             </View>
-            <View className='code-view'>
-              <Input className='code-input' type='text' onChange={this.onHandleCodeInput} placeholder='验证码'/>
-              <Button className='send-code-button' disabled={this.state.isAbleOfCodeBtn}
+            <View className='register-form-code'>
+              <Input className='register-form-code-input' type='text' onChange={this.onHandleCodeInput} placeholder='验证码'/>
+              <Button className='register-form-code-button' disabled={this.state.isAbleOfCodeBtn}
                       onClick={this.getCode}>{this.state.lockShow ? this.state.lockTime + 's秒后获取' : '获取验证码'}</Button>
             </View>
-            <View className='input-view'>
-              <Input className='password-input' type='password' onChange={this.onHandlePasswordInput}
+            <View className='register-form-password'>
+              <Input className='register-form-password-input' type='password' onChange={this.onHandlePasswordInput}
                      placeholder='请输入密码'/>
             </View>
           </View>

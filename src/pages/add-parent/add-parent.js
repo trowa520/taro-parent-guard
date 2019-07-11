@@ -5,7 +5,7 @@ import {connect} from "@tarojs/redux"
 import * as actions from "@actions/profile"
 import {getWindowHeight} from "@utils/style"
 import defaultIcon from '@assets/default.png'
-import {AtTabs, AtTabsPane, AtList, AtListItem} from "taro-ui";
+import {AtTabs, AtTabsPane} from "taro-ui";
 import classNames from 'classnames'
 import './add-parent.scss'
 
@@ -74,9 +74,9 @@ class AddParent extends Component {
         <View className='add-parent' style={{height: getWindowHeight()}}>
           <View className='add-parent-line-view'> </View>
           <View className='add-parent-title'>
-            具体要求如下： {process.env.TARO_ENV === 'h5' ? <br/> : '\n'}
-            1、输入的手机号必须为已注册用户{process.env.TARO_ENV === 'h5' ? <br/> : '\n'}
-            2、该用户不是其他孩子的管理员{process.env.TARO_ENV === 'h5' ? <br/> : '\n'}
+            具体要求如下：
+            <View>1、输入的手机号必须为已注册用户</View>
+            <View>2、该用户不是其他孩子的管理员</View>
           </View>
           <View className='add-parent-card'>
             <Input className='add-parent-card-input' placeholder='请输入手机号' onChange={this.onChangeMobile.bind(this)} />

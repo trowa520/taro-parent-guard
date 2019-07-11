@@ -4,13 +4,15 @@ import {
   API_GET_SCREEN_SCHEDULE,
   API_ADD_SCHEDULE,
   API_UPDATE_SCHEDULE,
+  API_DELETE_SCHEDULE,
 } from '@constants/api'
 import {
   GET_SCHEDULE,
   GET_APP_SCHEDULE,
   GET_SCREEN_SCHEDULE,
   ADD_SCHEDULE,
-  UPDATE_SCHEDULE
+  UPDATE_SCHEDULE,
+  DELETE_SCHEDULE
 } from '@constants/time_manager'
 
 import { createAction } from '@utils/redux'
@@ -62,13 +64,26 @@ export const dispatchAddSchedule = payload => createAction({
 })
 
 /**
- * 添加任务
+ * 更新任务
  * @param payload
  * @returns {*}
  */
 export const dispatchUpdateSchedule = payload => createAction({
   url: API_UPDATE_SCHEDULE,
   type: UPDATE_SCHEDULE,
+  method: "POST",
+  json: true,
+  payload
+})
+
+/**
+ * 删除任务
+ * @param payload
+ * @returns {*}
+ */
+export const dispatchDeleteSchedule = payload => createAction({
+  url: API_DELETE_SCHEDULE,
+  type: DELETE_SCHEDULE,
   method: "POST",
   json: true,
   payload

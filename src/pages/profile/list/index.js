@@ -8,9 +8,11 @@ import './index.scss'
 
 @connect(state => state.profile, {...actions})
 export default class List extends Component {
+
   static defaultProps = {
     list: []
   }
+
   navToTimeSet = (item) => {
     const {kids,userInfo} = this.props
     if (item.id === 0) {

@@ -1,0 +1,35 @@
+.friend {
+  background: #f1f1f1;
+
+  &-list {
+    background: white;
+
+    &-item {
+      height: 110px;
+      border: 0 solid #f0f0f0;
+      border-bottom-width: 2px;
+      display: flex;
+      align-items: center;
+      margin: 0 30px;
+      justify-content: space-between;
+
+      &-icon {
+        height: 78px;
+        width: 78px;
+        border-radius: 50%;
+      }
+
+      &-name {
+        flex: 3;
+        margin-left: 30px;
+        font-size: 28px;
+        color: #333333;
+      }
+
+      &-date {
+        color: #999999;
+        font-size: 26px;
+      }
+    }
+  }
+}

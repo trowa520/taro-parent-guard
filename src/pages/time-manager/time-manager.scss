@@ -5,6 +5,7 @@
     height: 20px;
     background: #f1f1f1;
   }
+
   &-tab1 {
     margin: 0 20px;
     border-radius: 5px;
@@ -38,6 +39,7 @@
     }
   }
 }
+
 .time-length-list {
   background: white;
   font-size: 18px;
@@ -58,9 +60,11 @@
       margin-left: 25px;
       font-size: 24px;
     }
+
     &-date {
       width: 630px;
     }
+
     &-img {
       height: 25px;
       width: 15px;

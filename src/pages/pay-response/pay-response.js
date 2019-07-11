@@ -10,7 +10,6 @@ export default class PayResponse extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.$router.params);
     this.state = {
       payResult: this.$router.params.payResult,
 

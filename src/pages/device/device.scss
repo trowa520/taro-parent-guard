@@ -1,5 +1,6 @@
 @import "~taro-ui/dist/style/components/image-picker.scss";
 @import "~taro-ui/dist/style/components/icon.scss";
+
 .device {
   background: #f1f1f1;
 
@@ -33,9 +34,10 @@
   }
 
   &-img {
-    height: 80px;
-    width: 80px;
-    margin-right: 80px;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
   }
 }
 
@@ -93,6 +95,7 @@
   margin-top: 20px;
   font-size: 30px;
 }
+
 .save-button-hidden {
   visibility: hidden;
 }
